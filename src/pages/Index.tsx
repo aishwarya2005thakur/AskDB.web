@@ -7,7 +7,7 @@ const Index = () => {
     <>
       <NavBar />
       <div className="min-h-screen bg-gradient-to-b from-white to-pdf-background py-12 px-4">
-        <div className="max-w-screen-xl mx-auto">
+        <div className="max-w-screen-md mx-auto">
           <div className="text-center mb-10">
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
               PDF Analyzer

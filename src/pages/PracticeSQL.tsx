@@ -1,4 +1,5 @@
 
+import NavBar from "@/components/NavBar";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,27 +10,28 @@ const PracticeSQL = () => {
   const [query, setQuery] = useState("");
   
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-pdf-background py-12 px-4">
-      <div className="max-w-screen-xl mx-auto">
-        <div className="text-center mb-10">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
-            Practice SQL
-          </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Improve your SQL skills with our interactive environment. Practice writing queries and see the results instantly.
-          </p>
-        </div>
-        
-        <Tabs defaultValue="exercise1" className="w-full">
-          <TabsList className="grid grid-cols-3 max-w-md mx-auto mb-6">
-            <TabsTrigger value="exercise1">Exercise 1</TabsTrigger>
-            <TabsTrigger value="exercise2">Exercise 2</TabsTrigger>
-            <TabsTrigger value="exercise3">Exercise 3</TabsTrigger>
-          </TabsList>
+    <>
+      <NavBar />
+      <div className="min-h-screen bg-gradient-to-b from-white to-pdf-background py-12 px-4">
+        <div className="max-w-screen-md mx-auto">
+          <div className="text-center mb-10">
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+              Practice SQL
+            </h1>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Improve your SQL skills with our interactive environment. Practice writing queries and see the results instantly.
+            </p>
+          </div>
           
-          <TabsContent value="exercise1">
-            <div className="grid md:grid-cols-2 gap-6">
-              <Card>
+          <Tabs defaultValue="exercise1" className="w-full">
+            <TabsList className="grid grid-cols-3 max-w-md mx-auto mb-6">
+              <TabsTrigger value="exercise1">Exercise 1</TabsTrigger>
+              <TabsTrigger value="exercise2">Exercise 2</TabsTrigger>
+              <TabsTrigger value="exercise3">Exercise 3</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="exercise1">
+              <Card className="mb-6">
                 <CardHeader>
                   <CardTitle>Exercise 1: Basic SELECT</CardTitle>
                   <CardDescription>
@@ -43,11 +45,11 @@ const PracticeSQL = () => {
                   </div>
                   <Textarea
                     placeholder="SELECT * FROM..."
-                    className="min-h-[200px] font-mono"
+                    className="min-h-[150px] font-mono"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                   />
-                  <div className="flex justify-end mt-4">
+                  <div className="flex justify-center mt-4">
                     <Button>
                       Submit Answer
                     </Button>
@@ -63,7 +65,7 @@ const PracticeSQL = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="min-h-[200px] rounded-md border p-4 overflow-auto">
+                  <div className="min-h-[150px] rounded-md border p-4 overflow-auto">
                     <pre className="text-sm">
                       {`id | title        | content                 | date_added
 -------------------------------------------------
@@ -74,39 +76,39 @@ const PracticeSQL = () => {
                   </div>
                 </CardContent>
               </Card>
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="exercise2">
-            <Card>
-              <CardHeader>
-                <CardTitle>Exercise 2: WHERE Clauses</CardTitle>
-                <CardDescription>
-                  Learn to filter data with WHERE clauses
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-center text-muted-foreground">Complete Exercise 1 to unlock this content</p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="exercise3">
-            <Card>
-              <CardHeader>
-                <CardTitle>Exercise 3: JOIN Operations</CardTitle>
-                <CardDescription>
-                  Master joining tables for complex data retrieval
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-center text-muted-foreground">Complete Exercise 2 to unlock this content</p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+            </TabsContent>
+            
+            <TabsContent value="exercise2">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Exercise 2: WHERE Clauses</CardTitle>
+                  <CardDescription>
+                    Learn to filter data with WHERE clauses
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-center text-muted-foreground">Complete Exercise 1 to unlock this content</p>
+                </CardContent>
+              </Card>
+            </TabsContent>
+            
+            <TabsContent value="exercise3">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Exercise 3: JOIN Operations</CardTitle>
+                  <CardDescription>
+                    Master joining tables for complex data retrieval
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-center text-muted-foreground">Complete Exercise 2 to unlock this content</p>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
