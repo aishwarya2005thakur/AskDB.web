@@ -58,9 +58,9 @@ const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
         value={status.progress} 
         className={cn(
           "h-2 transition-all duration-300",
-          isActive && "animate-pulse-opacity"
+          isActive && "animate-pulse-opacity",
+          getProgressColor()
         )}
-        indicatorClassName={cn(getProgressColor())}
       />
     </div>
   );

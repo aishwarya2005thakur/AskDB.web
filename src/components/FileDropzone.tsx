@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useCallback } from "react";
-import { FilePdf, Upload } from "lucide-react";
+import { FileText, Upload } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface FileDropzoneProps {
@@ -78,7 +78,7 @@ const FileDropzone: React.FC<FileDropzoneProps> = ({
       <div className="flex flex-col items-center justify-center space-y-4">
         <div className="p-4 rounded-full bg-pdf-secondary/50">
           {isDragging ? (
-            <FilePdf className="w-10 h-10 text-pdf-primary" />
+            <FileText className="w-10 h-10 text-pdf-primary" />
           ) : (
             <Upload className="w-10 h-10 text-pdf-primary" />
           )}

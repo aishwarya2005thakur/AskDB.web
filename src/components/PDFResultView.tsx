@@ -3,7 +3,7 @@ import React from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { FilePdf, Download, RefreshCw } from "lucide-react";
+import { FileText, Download, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { UploadResponse } from '@/services/pdfService';
 
@@ -23,7 +23,7 @@ const PDFResultView: React.FC<PDFResultViewProps> = ({
       <Card className="w-full bg-destructive/10 border-destructive/30">
         <CardHeader>
           <CardTitle className="text-destructive flex items-center gap-2">
-            <FilePdf className="h-5 w-5" />
+            <FileText className="h-5 w-5" />
             Error Processing PDF
           </CardTitle>
           <CardDescription>
@@ -53,7 +53,7 @@ const PDFResultView: React.FC<PDFResultViewProps> = ({
         <div className="flex justify-between items-start">
           <div>
             <CardTitle className="flex items-center gap-2">
-              <FilePdf className="h-5 w-5 text-pdf-primary" />
+              <FileText className="h-5 w-5 text-pdf-primary" />
               {fileName}
             </CardTitle>
             <CardDescription>
