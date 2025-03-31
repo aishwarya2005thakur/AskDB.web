@@ -7,11 +7,26 @@ import { FileText, Download, RefreshCw, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { UploadResponse } from '@/services/pdfService';
+import { 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableHead, 
+  TableHeader, 
+  TableRow 
+} from "@/components/ui/table";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface PDFResultViewProps {
   result: UploadResponse;
   fileName: string;
   onReset: () => void;
+}
+
+interface SearchMatch {
+  text: string;
+  context: string;
+  position: number;
 }
 
 const PDFResultView: React.FC<PDFResultViewProps> = ({
@@ -21,10 +36,12 @@ const PDFResultView: React.FC<PDFResultViewProps> = ({
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<string | null>(null);
+  const [tableResults, setTableResults] = useState<SearchMatch[]>([]);
 
   const handleSearch = () => {
     if (!searchQuery.trim()) {
       setSearchResults(null);
+      setTableResults([]);
       return;
     }
     
@@ -45,8 +62,41 @@ const PDFResultView: React.FC<PDFResultViewProps> = ({
         if (end < text.length) snippet = snippet + '...';
         
         setSearchResults(snippet);
+
+        // Find all occurrences for table view
+        const matches: SearchMatch[] = [];
+        let position = 0;
+        let currentIndex = text.indexOf(query);
+        
+        while (currentIndex !== -1 && matches.length < 10) { // Limit to 10 matches
+          const matchStart = Math.max(0, currentIndex - 30);
+          const matchEnd = Math.min(text.length, currentIndex + query.length + 30);
+          let context = text.substring(matchStart, matchEnd);
+          
+          // Add ellipsis for context
+          if (matchStart > 0) context = '...' + context;
+          if (matchEnd < text.length) context = context + '...';
+          
+          // Get the actual matched text in original case
+          const originalText = result.results.text.substring(
+            currentIndex,
+            currentIndex + query.length
+          );
+          
+          matches.push({
+            text: originalText,
+            context: context,
+            position: currentIndex
+          });
+          
+          position = currentIndex + 1;
+          currentIndex = text.indexOf(query, position);
+        }
+        
+        setTableResults(matches);
       } else {
         setSearchResults("No matches found for your query.");
+        setTableResults([]);
       }
     }
   };
@@ -146,6 +196,41 @@ const PDFResultView: React.FC<PDFResultViewProps> = ({
             </div>
           )}
         </div>
+        
+        {/* Table View for Search Results */}
+        {tableResults.length > 0 && (
+          <div className="mt-4">
+            <h3 className="text-sm font-medium mb-2">All Matches</h3>
+            <div className="border rounded-md">
+              <ScrollArea className="h-64">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="w-16">#</TableHead>
+                      <TableHead className="w-24">Match</TableHead>
+                      <TableHead>Context</TableHead>
+                      <TableHead className="w-24 text-right">Position</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {tableResults.map((match, index) => (
+                      <TableRow key={index}>
+                        <TableCell className="font-medium">{index + 1}</TableCell>
+                        <TableCell className="font-semibold text-pdf-primary">
+                          {match.text}
+                        </TableCell>
+                        <TableCell className="text-sm">{match.context}</TableCell>
+                        <TableCell className="text-right text-muted-foreground">
+                          {match.position}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </ScrollArea>
+            </div>
+          </div>
+        )}
         
         {result.results.text && (
           <>
