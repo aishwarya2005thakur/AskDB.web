@@ -1,10 +1,11 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { FileText, Download, RefreshCw } from "lucide-react";
+import { FileText, Download, RefreshCw, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { UploadResponse } from '@/services/pdfService';
 
 interface PDFResultViewProps {
@@ -18,6 +19,38 @@ const PDFResultView: React.FC<PDFResultViewProps> = ({
   fileName,
   onReset
 }) => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<string | null>(null);
+
+  const handleSearch = () => {
+    if (!searchQuery.trim()) {
+      setSearchResults(null);
+      return;
+    }
+    
+    // Simple search implementation - in a real app, this might call an API
+    if (result.results?.text) {
+      const text = result.results.text.toLowerCase();
+      const query = searchQuery.toLowerCase();
+      
+      if (text.includes(query)) {
+        // Extract a snippet of text around the search query for context
+        const index = text.indexOf(query);
+        const start = Math.max(0, index - 50);
+        const end = Math.min(text.length, index + query.length + 50);
+        let snippet = text.substring(start, end);
+        
+        // Add ellipsis if we're not at the beginning or end
+        if (start > 0) snippet = '...' + snippet;
+        if (end < text.length) snippet = snippet + '...';
+        
+        setSearchResults(snippet);
+      } else {
+        setSearchResults("No matches found for your query.");
+      }
+    }
+  };
+
   if (!result.success || !result.results) {
     return (
       <Card className="w-full bg-destructive/10 border-destructive/30">
@@ -81,6 +114,37 @@ const PDFResultView: React.FC<PDFResultViewProps> = ({
               ))}
             </div>
           </div>
+        </div>
+        
+        {/* Search Box */}
+        <div className="my-4">
+          <h3 className="text-sm font-medium mb-2">Search in Document</h3>
+          <div className="flex gap-2">
+            <div className="relative flex-grow">
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                type="text"
+                placeholder="Enter your query..."
+                className="pl-9 w-full"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+              />
+            </div>
+            <Button 
+              onClick={handleSearch}
+              className="bg-pdf-primary hover:bg-pdf-primary/90"
+            >
+              Search
+            </Button>
+          </div>
+          
+          {searchResults && (
+            <div className="mt-3 p-3 bg-muted/30 border rounded-md">
+              <p className="text-sm font-medium mb-1">Search Results:</p>
+              <p className="text-sm">{searchResults}</p>
+            </div>
+          )}
         </div>
         
         {result.results.text && (
