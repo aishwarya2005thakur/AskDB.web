@@ -1,13 +1,9 @@
 
 import NavBar from "@/components/NavBar";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useState } from "react";
+import SqlQueryExecutor from "@/components/SqlQueryExecutor";
 
 const WriteQueries = () => {
-  const [query, setQuery] = useState("");
-  
   return (
     <>
       <NavBar />
@@ -30,31 +26,7 @@ const WriteQueries = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Textarea
-                placeholder="SELECT * FROM document WHERE..."
-                className="min-h-[200px] font-mono"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-              />
-              <div className="flex justify-center mt-4">
-                <Button>
-                  Execute Query
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader>
-              <CardTitle>Results</CardTitle>
-              <CardDescription>
-                View your query results here
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="min-h-[200px] rounded-md border border-dashed flex items-center justify-center">
-                <p className="text-gray-500">Execute a query to see results</p>
-              </div>
+              <SqlQueryExecutor />
             </CardContent>
           </Card>
         </div>
