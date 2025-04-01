@@ -1,6 +1,6 @@
 
-import PDFUploader from '@/components/PDFUploader';
-import NavBar from '@/components/NavBar';
+import NavBar from "@/components/NavBar";
+import NaturalLanguageQueryGenerator from "@/components/NaturalLanguageQueryGenerator";
 
 const Index = () => {
   return (
@@ -10,14 +10,14 @@ const Index = () => {
         <div className="max-w-screen-md mx-auto">
           <div className="text-center mb-10">
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
-              PDF Analyzer
+              Natural Language to SQL
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Upload your PDF documents for instant analysis and text extraction. Our system processes your documents and provides valuable insights.
+              Transform your natural language questions into SQL queries instantly. Simply type your question and get the SQL code.
             </p>
           </div>
-
-          <PDFUploader />
+          
+          <NaturalLanguageQueryGenerator />
         </div>
       </div>
     </>
