@@ -1,13 +1,13 @@
 
 import NavBar from "@/components/NavBar";
-import NaturalLanguageQueryGenerator from "@/components/NaturalLanguageQueryGenerator";
-import PDFQueryConverter from "@/components/PDFQueryConverter";
+import QueryWorkspace from "@/components/QueryWorkspace";
 
 const Index = () => {
   return (
-    <>
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-white to-pdf-background">
       <NavBar />
-      <div className="min-h-screen bg-gradient-to-b from-white to-pdf-background py-12 px-4">
+      
+      <div className="flex-1 p-4 md:p-8">
         <div className="max-w-screen-lg mx-auto">
           <div className="text-center mb-10">
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
@@ -18,10 +18,10 @@ const Index = () => {
             </p>
           </div>
           
-          <PDFQueryConverter />
+          <QueryWorkspace />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

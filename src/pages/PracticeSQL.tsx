@@ -5,14 +5,23 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
+import { Database, Loader2 } from "lucide-react";
 
 const PracticeSQL = () => {
   const [query, setQuery] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    setIsSubmitting(false);
+  };
   
   return (
-    <>
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-white to-pdf-background">
       <NavBar />
-      <div className="min-h-screen bg-gradient-to-b from-white to-pdf-background py-12 px-4">
+      
+      <div className="flex-1 p-4 md:p-8">
         <div className="max-w-screen-md mx-auto">
           <div className="text-center mb-10">
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
@@ -33,7 +42,10 @@ const PracticeSQL = () => {
             <TabsContent value="exercise1">
               <Card className="mb-6">
                 <CardHeader>
-                  <CardTitle>Exercise 1: Basic SELECT</CardTitle>
+                  <CardTitle className="flex items-center">
+                    <Database className="mr-2 h-5 w-5 text-pdf-primary" />
+                    Exercise 1: Basic SELECT
+                  </CardTitle>
                   <CardDescription>
                     Practice basic SELECT statements to retrieve document data
                   </CardDescription>
@@ -50,8 +62,15 @@ const PracticeSQL = () => {
                     onChange={(e) => setQuery(e.target.value)}
                   />
                   <div className="flex justify-center mt-4">
-                    <Button>
-                      Submit Answer
+                    <Button onClick={handleSubmit} disabled={isSubmitting}>
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Submitting...
+                        </>
+                      ) : (
+                        "Submit Answer"
+                      )}
                     </Button>
                   </div>
                 </CardContent>
@@ -81,7 +100,10 @@ const PracticeSQL = () => {
             <TabsContent value="exercise2">
               <Card>
                 <CardHeader>
-                  <CardTitle>Exercise 2: WHERE Clauses</CardTitle>
+                  <CardTitle className="flex items-center">
+                    <Database className="mr-2 h-5 w-5 text-pdf-primary" />
+                    Exercise 2: WHERE Clauses
+                  </CardTitle>
                   <CardDescription>
                     Learn to filter data with WHERE clauses
                   </CardDescription>
@@ -95,7 +117,10 @@ const PracticeSQL = () => {
             <TabsContent value="exercise3">
               <Card>
                 <CardHeader>
-                  <CardTitle>Exercise 3: JOIN Operations</CardTitle>
+                  <CardTitle className="flex items-center">
+                    <Database className="mr-2 h-5 w-5 text-pdf-primary" />
+                    Exercise 3: JOIN Operations
+                  </CardTitle>
                   <CardDescription>
                     Master joining tables for complex data retrieval
                   </CardDescription>
@@ -108,7 +133,7 @@ const PracticeSQL = () => {
           </Tabs>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
