@@ -14,7 +14,7 @@ const NavBar = () => {
               Home
             </Link>
             <Link to="/write-queries" className="text-white hover:text-[#0EA5E9] transition-colors">
-              Write Queries
+              Learn SQL
             </Link>
             <Link to="/practice-sql" className="text-white hover:text-[#0EA5E9] transition-colors">
               Practice SQL
