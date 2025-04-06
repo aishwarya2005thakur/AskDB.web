@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+pdfplumber
+sqlalchemy
+mysql-connector-python
+pandas
+python-multipart
