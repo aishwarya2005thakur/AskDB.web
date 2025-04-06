@@ -2,108 +2,120 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent } from "@/components/ui/card";
+import { Play, Copy, Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { Download, Loader2, Play } from "lucide-react";
-import QueryResultTable from "./QueryResultTable";
-
-interface QueryResult {
-  columns: string[];
-  rows: Record<string, any>[];
-}
+import QueryResultDisplay from "./QueryResultDisplay";
 
 const SqlQueryExecutor = () => {
-  const [query, setQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [results, setResults] = useState<QueryResult | null>(null);
+  const [sqlQuery, setSqlQuery] = useState("");
+  const [isRunningQuery, setIsRunningQuery] = useState(false);
+  const [queryResults, setQueryResults] = useState<Record<string, any>[] | null>(null);
+  const [queryError, setQueryError] = useState<string | null>(null);
 
   const executeQuery = async () => {
-    if (!query.trim()) {
-      toast.error("Please enter a SQL query");
+    if (!sqlQuery.trim()) {
+      toast.error("Please enter an SQL query first");
       return;
     }
 
-    setIsLoading(true);
+    setIsRunningQuery(true);
+    setQueryError(null);
+    
     try {
-      // Simulate API call delay
+      // Simulate API call with delay
       await new Promise(resolve => setTimeout(resolve, 1500));
       
-      // For demonstration, generate mock results based on the query
-      if (query.toLowerCase().includes("select") && query.toLowerCase().includes("from")) {
-        // Mock data for SELECT query
-        setResults({
-          columns: ["id", "title", "content", "created_at"],
-          rows: [
-            { id: 1, title: "Document 1", content: "Sample content from PDF", created_at: "2023-10-15" },
-            { id: 2, title: "Document 2", content: "Another PDF content example", created_at: "2023-10-16" },
-            { id: 3, title: "Document 3", content: "More sample text from document", created_at: "2023-10-17" },
-            { id: 4, title: "Report", content: "Quarterly financial results", created_at: "2023-10-18" },
-            { id: 5, title: "Invoice", content: "Payment details for services", created_at: "2023-10-19" },
-            { id: 6, title: "Contract", content: "Legal agreement between parties", created_at: "2023-10-20" },
-          ]
-        });
-      } else if (query.toLowerCase().includes("count")) {
-        // Mock data for COUNT query
-        setResults({
-          columns: ["count"],
-          rows: [{ count: 6 }]
-        });
-      } else {
-        // Default mock data
-        setResults({
-          columns: ["result"],
-          rows: [{ result: "Query executed. Affected rows: 2" }]
-        });
-      }
+      // Mock query execution result
+      const results = [
+        { id: 1, table_name: "users", column_count: 5, row_count: 120 },
+        { id: 2, table_name: "documents", column_count: 8, row_count: 45 },
+        { id: 3, table_name: "categories", column_count: 3, row_count: 12 },
+        { id: 4, table_name: "tags", column_count: 2, row_count: 30 },
+        { id: 5, table_name: "permissions", column_count: 4, row_count: 8 },
+      ];
+      
+      setQueryResults(results);
       toast.success("Query executed successfully");
     } catch (error) {
       console.error("Error executing query:", error);
+      setQueryError("Failed to retrieve results. Please check your query syntax.");
       toast.error("Failed to execute query");
     } finally {
-      setIsLoading(false);
+      setIsRunningQuery(false);
     }
   };
 
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(sqlQuery)
+      .then(() => toast.success("SQL query copied to clipboard"))
+      .catch(() => toast.error("Failed to copy SQL query"));
+  };
+  
+  const copyResults = () => {
+    if (!queryResults) return;
+    
+    // Convert results to JSON string
+    const resultsText = JSON.stringify(queryResults, null, 2);
+    
+    navigator.clipboard.writeText(resultsText)
+      .then(() => toast.success("Results copied to clipboard"))
+      .catch(() => toast.error("Failed to copy results"));
+  };
+
   return (
-    <div className="w-full space-y-4">
+    <div className="space-y-6">
       <div className="space-y-2">
+        <div className="flex justify-between items-center">
+          <label htmlFor="sqlQuery" className="text-sm font-medium">
+            SQL Query
+          </label>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={copyToClipboard}
+            className="h-8"
+          >
+            <Copy className="h-4 w-4 mr-1" />
+            Copy
+          </Button>
+        </div>
         <Textarea
-          placeholder="Enter your SQL query here..."
-          className="min-h-[150px] font-mono"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          id="sqlQuery"
+          placeholder="SELECT * FROM documents WHERE..."
+          value={sqlQuery}
+          onChange={(e) => setSqlQuery(e.target.value)}
+          className="min-h-[150px] font-mono text-sm"
         />
-        <div className="flex justify-center">
+        
+        <div className="flex justify-center pt-2">
           <Button 
             onClick={executeQuery} 
-            disabled={isLoading}
+            disabled={isRunningQuery || !sqlQuery.trim()}
             className="bg-pdf-primary hover:bg-pdf-primary/90"
           >
-            {isLoading ? (
+            {isRunningQuery ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Executing...
+                Running query...
               </>
             ) : (
               <>
                 <Play className="mr-2 h-4 w-4" />
-                Execute Query
+                Run Query
               </>
             )}
           </Button>
         </div>
       </div>
-
-      {(results || isLoading) && (
-        <Card>
-          <CardContent className="pt-6">
-            <QueryResultTable 
-              columns={results?.columns || []} 
-              rows={results?.rows || []} 
-              isLoading={isLoading}
-            />
-          </CardContent>
-        </Card>
+      
+      {/* Query Results */}
+      {(queryResults || isRunningQuery || queryError) && (
+        <QueryResultDisplay
+          results={queryResults}
+          isLoading={isRunningQuery}
+          error={queryError}
+          onCopyResults={copyResults}
+        />
       )}
     </div>
   );
