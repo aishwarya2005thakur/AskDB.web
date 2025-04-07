@@ -12,34 +12,34 @@ import { Github, Mail, Coffee, Database, Code, Brain } from 'lucide-react';
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-slate-50 border-t border-slate-200 pt-10 pb-4 mt-auto">
+    <footer className="w-full bg-gradient-to-r from-[#051525] to-[#0a2440] text-white pt-10 pb-4 mt-auto">
       <div className="max-w-screen-xl mx-auto px-4">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {/* FAQ Section */}
           <div className="col-span-1 lg:col-span-2">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Frequently Asked Questions</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">Frequently Asked Questions</h3>
             <Accordion type="single" collapsible className="w-full">
-              <AccordionItem value="item-1">
-                <AccordionTrigger className="text-left">What is AskDB?</AccordionTrigger>
-                <AccordionContent>
+              <AccordionItem value="item-1" className="border-white/20">
+                <AccordionTrigger className="text-left text-white">What is AskDB?</AccordionTrigger>
+                <AccordionContent className="text-white/90">
                   AskDB is an AI-powered platform where you can upload your database and query it in plain English.
                 </AccordionContent>
               </AccordionItem>
-              <AccordionItem value="item-2">
-                <AccordionTrigger className="text-left">Do I need to know SQL to use AskDB?</AccordionTrigger>
-                <AccordionContent>
+              <AccordionItem value="item-2" className="border-white/20">
+                <AccordionTrigger className="text-left text-white">Do I need to know SQL to use AskDB?</AccordionTrigger>
+                <AccordionContent className="text-white/90">
                   Not at all! You can write queries in natural language, and there's a page to help you learn SQL too.
                 </AccordionContent>
               </AccordionItem>
-              <AccordionItem value="item-3">
-                <AccordionTrigger className="text-left">Is AskDB free to use?</AccordionTrigger>
-                <AccordionContent>
+              <AccordionItem value="item-3" className="border-white/20">
+                <AccordionTrigger className="text-left text-white">Is AskDB free to use?</AccordionTrigger>
+                <AccordionContent className="text-white/90">
                   Yes! It's a completely free and open-source project.
                 </AccordionContent>
               </AccordionItem>
-              <AccordionItem value="item-4">
-                <AccordionTrigger className="text-left">Where can I report bugs or give suggestions?</AccordionTrigger>
-                <AccordionContent>
+              <AccordionItem value="item-4" className="border-white/20">
+                <AccordionTrigger className="text-left text-white">Where can I report bugs or give suggestions?</AccordionTrigger>
+                <AccordionContent className="text-white/90">
                   You can open an issue or contribute via our GitHub repo linked below.
                 </AccordionContent>
               </AccordionItem>
@@ -49,23 +49,23 @@ const Footer = () => {
           {/* Quick Links and Contact */}
           <div>
             <div className="mb-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Links</h3>
+              <h3 className="text-lg font-semibold text-white mb-4">Quick Links</h3>
               <ul className="space-y-2">
                 <li>
-                  <Link to="/" className="text-gray-600 hover:text-[#0EA5E9] transition-colors">Home</Link>
+                  <Link to="/" className="text-white/90 hover:text-[#0EA5E9] transition-colors">Home</Link>
                 </li>
                 <li>
-                  <Link to="/write-queries" className="text-gray-600 hover:text-[#0EA5E9] transition-colors">Learn SQL</Link>
+                  <Link to="/write-queries" className="text-white/90 hover:text-[#0EA5E9] transition-colors">Learn SQL</Link>
                 </li>
                 <li>
-                  <Link to="/practice-sql" className="text-gray-600 hover:text-[#0EA5E9] transition-colors">Practice SQL</Link>
+                  <Link to="/practice-sql" className="text-white/90 hover:text-[#0EA5E9] transition-colors">Practice SQL</Link>
                 </li>
               </ul>
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Contact / Feedback</h3>
-              <p className="text-gray-600 mb-2">
+              <h3 className="text-lg font-semibold text-white mb-4">Contact / Feedback</h3>
+              <p className="text-white/90 mb-2">
                 Got questions or suggestions?
               </p>
               <a 
@@ -82,8 +82,8 @@ const Footer = () => {
         </div>
 
         {/* Credits */}
-        <div className="mt-8 pt-6 border-t border-slate-200">
-          <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 text-gray-600 mb-4">
+        <div className="mt-8 pt-6 border-t border-white/20">
+          <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 text-white/90 mb-4">
             <span>Built using</span>
             <div className="flex items-center">
               <Code className="h-4 w-4 mr-1" />
@@ -105,7 +105,7 @@ const Footer = () => {
         </div>
 
         {/* Open Source Note */}
-        <div className="mt-4 text-center md:text-left text-gray-600 text-sm">
+        <div className="mt-4 text-center md:text-left text-white/90 text-sm">
           <p className="mb-2">
             💡 <em>AskDB is a small experimental project built with lots of love (and caffeine) by a group of 2nd-year engineering students.</em>
           </p>
@@ -128,7 +128,7 @@ const Footer = () => {
         </div>
 
         {/* Legal / Copyright */}
-        <div className="mt-6 text-center text-gray-500 text-xs">
+        <div className="mt-6 text-center text-white/70 text-xs">
           © 2025 AskDB. For educational use only.
         </div>
       </div>

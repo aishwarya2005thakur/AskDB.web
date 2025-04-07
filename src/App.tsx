@@ -7,7 +7,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import WriteQueries from "./pages/WriteQueries";
 import PracticeSQL from "./pages/PracticeSQL";
-import PracticeSQLWithFooter from "./pages/PracticeSQL";
 import NotFound from "./pages/NotFound";
 import Footer from "./components/Footer";
 
