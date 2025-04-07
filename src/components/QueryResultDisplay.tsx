@@ -20,6 +20,11 @@ const QueryResultDisplay = ({
   onCopyResults,
   initialMessage = "No results to display yet"
 }: QueryResultDisplayProps) => {
+  // Extract column names from the first result object if results exist
+  const columns = results && results.length > 0 
+    ? Object.keys(results[0])
+    : [];
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
@@ -53,7 +58,7 @@ const QueryResultDisplay = ({
         ) : results && results.length > 0 ? (
           <div>
             <p className="text-muted-foreground mb-2">Found {results.length} results</p>
-            <QueryResultTable data={results} />
+            <QueryResultTable columns={columns} rows={results} />
           </div>
         ) : (
           <div className="text-center py-8 text-muted-foreground">
