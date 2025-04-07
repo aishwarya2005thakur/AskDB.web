@@ -1,51 +1,11 @@
-
 import { useState } from "react";
 import NavBar from "@/components/NavBar";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Progress } from "@/components/ui/progress";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Database, CheckCircle2, ChevronDown, Loader2, Info } from "lucide-react";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
-import OutputComparison from "@/components/OutputComparison";
-
-interface Question {
-  id: string;
-  title: string;
-  task: string;
-  completed: boolean;
-  userQuery: string;
-  expectedOutput: {
-    headers: string[];
-    rows: (string | number)[][];
-  };
-}
-
-interface Level {
-  id: string;
-  title: string;
-  dbDiagram: string;
-  description: string;
-  questions: Question[];
-  completed: number;
-  unlocked: boolean;
-}
-
-interface ValidationResult {
-  correct: boolean;
-  userOutput?: {
-    headers: string[];
-    rows: (string | number)[][];
-  };
-  expectedOutput?: {
-    headers: string[];
-    rows: (string | number)[][];
-  };
-}
+import { Level, ValidationResult } from "@/types/practiceSQL";
+import LevelHeader from "@/components/practice/LevelHeader";
+import QuestionList from "@/components/practice/QuestionList";
+import LevelTabs from "@/components/practice/LevelTabs";
 
 const PracticeSQL = () => {
   // Define the levels with questions
@@ -139,7 +99,7 @@ const PracticeSQL = () => {
     {
       id: "medium",
       title: "Level 2 - Medium",
-      dbDiagram: "/lovable-uploads/8ced615e-8165-4bd0-b159-a0babf617a3c.png", // Replace with Level2.png when uploaded
+      dbDiagram: "/lovable-uploads/8ced615e-8165-4bd0-b159-a0babf617a3c.png",
       description: "JOIN operations and more complex filtering.",
       completed: 0,
       unlocked: false,
@@ -223,7 +183,7 @@ const PracticeSQL = () => {
     {
       id: "hard",
       title: "Level 3 - Hard",
-      dbDiagram: "/lovable-uploads/8ced615e-8165-4bd0-b159-a0babf617a3c.png", // Replace with Level3.png when uploaded
+      dbDiagram: "/lovable-uploads/8ced615e-8165-4bd0-b159-a0babf617a3c.png",
       description: "Advanced queries with aggregation, subqueries, and complex joins.",
       completed: 0,
       unlocked: false,
@@ -443,21 +403,7 @@ const PracticeSQL = () => {
             onValueChange={setActiveLevel}
             className="w-full"
           >
-            <TabsList className="grid grid-cols-3 max-w-md mx-auto mb-6">
-              {levels.map(level => (
-                <TabsTrigger 
-                  key={level.id} 
-                  value={level.id}
-                  disabled={!level.unlocked}
-                  className={!level.unlocked ? "opacity-50 cursor-not-allowed" : ""}
-                >
-                  {level.title}
-                  {level.completed === 5 && (
-                    <CheckCircle2 className="ml-1 h-4 w-4 text-green-600" />
-                  )}
-                </TabsTrigger>
-              ))}
-            </TabsList>
+            <LevelTabs levels={levels} />
             
             {levels.map(level => (
               <TabsContent 
@@ -467,175 +413,24 @@ const PracticeSQL = () => {
               >
                 <div className="space-y-6">
                   {/* Level Header with Database Diagram */}
-                  <Card className="overflow-hidden border-t-4 border-pdf-primary">
-                    <CardHeader>
-                      <CardTitle className="flex items-center">
-                        <Database className="mr-2 h-5 w-5 text-pdf-primary" />
-                        {level.title}
-                      </CardTitle>
-                      <CardDescription>
-                        {level.description}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="mb-4">
-                        <h3 className="text-sm font-medium mb-2">Progress:</h3>
-                        <div className="flex items-center gap-3">
-                          <Progress value={(level.completed / 5) * 100} className="h-2" />
-                          <span className="text-sm font-medium">{level.completed} of 5 completed</span>
-                        </div>
-                      </div>
-                      
-                      <div className="relative border rounded-md p-4 mb-4 bg-white">
-                        <div className="text-sm font-medium mb-2">Database Diagram:</div>
-                        <div className="overflow-auto">
-                          <img 
-                            src={level.dbDiagram} 
-                            alt="Database Diagram" 
-                            className="max-w-full h-auto mx-auto"
-                          />
-                        </div>
-                        <div className="absolute top-2 right-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="h-8 w-8 p-0"
-                            title="Show column details"
-                          >
-                            <Info className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <LevelHeader
+                    title={level.title}
+                    description={level.description}
+                    completedCount={level.completed}
+                    dbDiagram={level.dbDiagram}
+                  />
 
                   {/* Questions */}
-                  <div className="space-y-4">
-                    {level.questions.map((question, index) => (
-                      <Collapsible 
-                        key={question.id}
-                        className={cn(
-                          "border rounded-lg overflow-hidden transition-all",
-                          question.completed ? "border-green-400 bg-green-50" : "border-slate-200"
-                        )}
-                      >
-                        <div className="flex items-center justify-between p-4">
-                          <div className="flex items-center gap-3">
-                            <div className={cn(
-                              "flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold",
-                              question.completed 
-                                ? "bg-green-100 text-green-700" 
-                                : "bg-slate-100 text-slate-700"
-                            )}>
-                              {index + 1}
-                            </div>
-                            <div className="font-medium">
-                              {question.title}
-                              {question.completed && (
-                                <span className="ml-2 text-green-600 text-sm">
-                                  ✓ Completed
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                          <CollapsibleTrigger asChild>
-                            <Button variant="ghost" size="sm">
-                              <ChevronDown className="h-4 w-4" />
-                            </Button>
-                          </CollapsibleTrigger>
-                        </div>
-                        
-                        <CollapsibleContent>
-                          <div className="px-4 pb-4 pt-0 space-y-4">
-                            <div className="p-3 bg-slate-50 rounded border">
-                              <p className="text-sm font-medium mb-1">Task:</p>
-                              <p className="text-sm">{question.task}</p>
-                            </div>
-                            
-                            <div>
-                              <Textarea
-                                placeholder="SELECT * FROM..."
-                                className="min-h-[120px] font-mono"
-                                value={question.userQuery}
-                                onChange={(e) => handleQueryChange(level.id, question.id, e.target.value)}
-                              />
-                            </div>
-                            
-                            <div className="flex justify-between items-center">
-                              <Button 
-                                variant="outline" 
-                                size="sm"
-                                onClick={() => toggleHint(question.id)}
-                              >
-                                {openHints[question.id] ? "Hide Hint" : "Show Hint"}
-                              </Button>
-                              
-                              <Button
-                                onClick={() => handleSubmit(level.id, question.id)}
-                                disabled={loadingStates[question.id] || !question.userQuery.trim()}
-                              >
-                                {loadingStates[question.id] ? (
-                                  <>
-                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                    Checking...
-                                  </>
-                                ) : (
-                                  "Submit Answer"
-                                )}
-                              </Button>
-                            </div>
-                            
-                            {openHints[question.id] && (
-                              <div className="p-3 bg-blue-50 border border-blue-200 rounded text-sm">
-                                <p className="font-medium mb-1">Hint:</p>
-                                <p>Remember to use the correct syntax for your SELECT statement and check the database diagram for available columns.</p>
-                              </div>
-                            )}
-                            
-                            {/* Show output comparison when query is incorrect */}
-                            {validationResults[question.id] && 
-                             !validationResults[question.id].correct && 
-                             validationResults[question.id].userOutput && 
-                             validationResults[question.id].expectedOutput && (
-                              <div className="mt-6">
-                                <OutputComparison 
-                                  userOutput={validationResults[question.id].userOutput!}
-                                  expectedOutput={validationResults[question.id].expectedOutput!}
-                                />
-                              </div>
-                            )}
-                            
-                            {/* Show expected output without comparison */}
-                            {(!validationResults[question.id] || !validationResults[question.id].userOutput) && (
-                              <div>
-                                <p className="text-sm font-medium mb-2">Expected Output:</p>
-                                <div className="max-h-[300px] overflow-auto border rounded">
-                                  <Table>
-                                    <TableHeader>
-                                      <TableRow>
-                                        {question.expectedOutput.headers.map((header, i) => (
-                                          <TableHead key={i} className="bg-slate-50">{header}</TableHead>
-                                        ))}
-                                      </TableRow>
-                                    </TableHeader>
-                                    <TableBody>
-                                      {question.expectedOutput.rows.map((row, i) => (
-                                        <TableRow key={i}>
-                                          {row.map((cell, j) => (
-                                            <TableCell key={j}>{cell}</TableCell>
-                                          ))}
-                                        </TableRow>
-                                      ))}
-                                    </TableBody>
-                                  </Table>
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        </CollapsibleContent>
-                      </Collapsible>
-                    ))}
-                  </div>
+                  <QuestionList
+                    levelId={level.id}
+                    questions={level.questions}
+                    loadingStates={loadingStates}
+                    openHints={openHints}
+                    validationResults={validationResults}
+                    onQueryChange={handleQueryChange}
+                    onToggleHint={toggleHint}
+                    onSubmit={handleSubmit}
+                  />
                 </div>
               </TabsContent>
             ))}
