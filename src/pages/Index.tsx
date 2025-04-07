@@ -1,7 +1,6 @@
 
 import NavBar from "@/components/NavBar";
 import QueryWorkspace from "@/components/QueryWorkspace";
-import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
@@ -22,8 +21,6 @@ const Index = () => {
           <QueryWorkspace />
         </div>
       </div>
-      
-      <Footer />
     </div>
   );
 };

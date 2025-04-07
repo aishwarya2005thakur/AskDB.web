@@ -1,3 +1,4 @@
+
 import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -31,7 +32,7 @@ const QueryWorkspace = () => {
   const [sqlQuery, setSqlQuery] = useState("");
   const [isGeneratingSql, setIsGeneratingSql] = useState(false);
   const [isRunningQuery, setIsRunningQuery] = useState(false);
-  const [queryResults, setQueryResults] = useState<Record<string, any>[]>([]);
+  const [queryResults, setQueryResults] = useState<Record<string, any>[] | null>(null);
   const [queryError, setQueryError] = useState<string | null>(null);
   
   // History states
@@ -346,16 +347,17 @@ const QueryWorkspace = () => {
         </Card>
       </div>
       
-      {/* Query Results - Always show the section */}
-      <div id="results-section">
-        <QueryResultDisplay
-          results={queryResults}
-          isLoading={isRunningQuery}
-          error={queryError}
-          onCopyResults={copyResults}
-          initialMessage="Enter and run a query to see results here"
-        />
-      </div>
+      {/* Query Results */}
+      {(queryResults || isRunningQuery || queryError) && (
+        <div id="results-section">
+          <QueryResultDisplay
+            results={queryResults}
+            isLoading={isRunningQuery}
+            error={queryError}
+            onCopyResults={copyResults}
+          />
+        </div>
+      )}
       
       {/* Saved Queries */}
       {savedQueries.length > 0 && (

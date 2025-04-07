@@ -8,7 +8,6 @@ import Index from "./pages/Index";
 import WriteQueries from "./pages/WriteQueries";
 import PracticeSQL from "./pages/PracticeSQL";
 import NotFound from "./pages/NotFound";
-import Footer from "./components/Footer";
 
 const queryClient = new QueryClient();
 
@@ -23,12 +22,7 @@ const App = () => (
           <Route path="/write-queries" element={<WriteQueries />} />
           <Route path="/practice-sql" element={<PracticeSQL />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={
-            <div className="flex flex-col min-h-screen">
-              <NotFound />
-              <Footer />
-            </div>
-          } />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
