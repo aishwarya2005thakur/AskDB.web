@@ -11,6 +11,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Database, CheckCircle2, ChevronDown, Loader2, Info } from "lucide-react";
 import { cn } from "@/lib/utils";
+import OutputComparison from "@/components/OutputComparison";
 
 interface Question {
   id: string;
@@ -32,6 +33,18 @@ interface Level {
   questions: Question[];
   completed: number;
   unlocked: boolean;
+}
+
+interface ValidationResult {
+  correct: boolean;
+  userOutput?: {
+    headers: string[];
+    rows: (string | number)[][];
+  };
+  expectedOutput?: {
+    headers: string[];
+    rows: (string | number)[][];
+  };
 }
 
 const PracticeSQL = () => {
@@ -296,12 +309,55 @@ const PracticeSQL = () => {
   const [activeLevel, setActiveLevel] = useState<string>("easy");
   const [loadingStates, setLoadingStates] = useState<Record<string, boolean>>({});
   const [openHints, setOpenHints] = useState<Record<string, boolean>>({});
+  const [validationResults, setValidationResults] = useState<Record<string, ValidationResult>>({});
 
   // Function to check if a query is correct (simplified for demo)
-  const validateQuery = (questionId: string, query: string): boolean => {
+  const validateQuery = (questionId: string, query: string): ValidationResult => {
     // In a real application, this would send the query to the backend
-    // and validate against expected results
-    return query.trim().toLowerCase().includes("select");
+    // For demo purposes, we'll return a mock validation result with differences
+    
+    // Always returning incorrect result with mock comparison data for demo
+    // In a real app, this would come from the backend
+    const question = levels.flatMap(l => l.questions).find(q => q.id === questionId);
+    
+    if (!question) {
+      return { correct: false };
+    }
+    
+    // For demo, alternate between correct and incorrect responses
+    const isCorrect = Math.random() > 0.7; // 30% chance of being correct
+    
+    if (isCorrect) {
+      return {
+        correct: true,
+        userOutput: question.expectedOutput,
+        expectedOutput: question.expectedOutput
+      };
+    }
+    
+    // Generate mock "incorrect" output with some differences
+    const userOutput = {
+      headers: [...question.expectedOutput.headers],
+      rows: question.expectedOutput.rows.map((row, idx) => {
+        // Modify some values to create differences
+        if (idx === 1 && row.length > 1) {
+          return [row[0], `Modified-${row[1]}`];
+        }
+        return [...row];
+      })
+    };
+    
+    // Add an extra row for more differences
+    if (userOutput.rows.length > 0) {
+      const lastRow = userOutput.rows[userOutput.rows.length - 1];
+      userOutput.rows.push([999, `Extra-${lastRow[1]}`]);
+    }
+    
+    return {
+      correct: false,
+      userOutput,
+      expectedOutput: question.expectedOutput
+    };
   };
 
   // Handle submission of SQL queries
@@ -317,11 +373,12 @@ const PracticeSQL = () => {
       
       if (levelIndex === -1 || questionIndex === -1) return;
       
-      const isCorrect = validateQuery(questionId, levels[levelIndex].questions[questionIndex].userQuery);
+      const result = validateQuery(questionId, levels[levelIndex].questions[questionIndex].userQuery);
+      setValidationResults(prev => ({ ...prev, [questionId]: result }));
       
       const updatedLevels = [...levels];
       // Mark question as completed if correct
-      updatedLevels[levelIndex].questions[questionIndex].completed = isCorrect;
+      updatedLevels[levelIndex].questions[questionIndex].completed = result.correct;
       
       // Update level completion count
       const completedCount = updatedLevels[levelIndex].questions.filter(q => q.completed).length;
@@ -351,6 +408,13 @@ const PracticeSQL = () => {
     const updatedLevels = [...levels];
     updatedLevels[levelIndex].questions[questionIndex].userQuery = value;
     setLevels(updatedLevels);
+    
+    // Clear validation results when query changes
+    setValidationResults(prev => {
+      const updated = { ...prev };
+      delete updated[questionId];
+      return updated;
+    });
   };
 
   // Toggle hint visibility
@@ -528,29 +592,45 @@ const PracticeSQL = () => {
                               </div>
                             )}
                             
-                            <div>
-                              <p className="text-sm font-medium mb-2">Expected Output:</p>
-                              <div className="max-h-[300px] overflow-auto border rounded">
-                                <Table>
-                                  <TableHeader>
-                                    <TableRow>
-                                      {question.expectedOutput.headers.map((header, i) => (
-                                        <TableHead key={i} className="bg-slate-50">{header}</TableHead>
-                                      ))}
-                                    </TableRow>
-                                  </TableHeader>
-                                  <TableBody>
-                                    {question.expectedOutput.rows.map((row, i) => (
-                                      <TableRow key={i}>
-                                        {row.map((cell, j) => (
-                                          <TableCell key={j}>{cell}</TableCell>
+                            {/* Show output comparison when query is incorrect */}
+                            {validationResults[question.id] && 
+                             !validationResults[question.id].correct && 
+                             validationResults[question.id].userOutput && 
+                             validationResults[question.id].expectedOutput && (
+                              <div className="mt-6">
+                                <OutputComparison 
+                                  userOutput={validationResults[question.id].userOutput!}
+                                  expectedOutput={validationResults[question.id].expectedOutput!}
+                                />
+                              </div>
+                            )}
+                            
+                            {/* Show expected output without comparison */}
+                            {(!validationResults[question.id] || !validationResults[question.id].userOutput) && (
+                              <div>
+                                <p className="text-sm font-medium mb-2">Expected Output:</p>
+                                <div className="max-h-[300px] overflow-auto border rounded">
+                                  <Table>
+                                    <TableHeader>
+                                      <TableRow>
+                                        {question.expectedOutput.headers.map((header, i) => (
+                                          <TableHead key={i} className="bg-slate-50">{header}</TableHead>
                                         ))}
                                       </TableRow>
-                                    ))}
-                                  </TableBody>
-                                </Table>
+                                    </TableHeader>
+                                    <TableBody>
+                                      {question.expectedOutput.rows.map((row, i) => (
+                                        <TableRow key={i}>
+                                          {row.map((cell, j) => (
+                                            <TableCell key={j}>{cell}</TableCell>
+                                          ))}
+                                        </TableRow>
+                                      ))}
+                                    </TableBody>
+                                  </Table>
+                                </div>
                               </div>
-                            </div>
+                            )}
                           </div>
                         </CollapsibleContent>
                       </Collapsible>
