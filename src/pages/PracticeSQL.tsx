@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import NavBar from "@/components/NavBar";
@@ -5,13 +6,16 @@ import LevelTabs from "@/components/practice/LevelTabs";
 import LevelHeader from "@/components/practice/LevelHeader";
 import QuestionList from "@/components/practice/QuestionList";
 import { Level, Question, ValidationResult } from "@/types/practiceSQL";
+import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
+import { Lock, Unlock } from "lucide-react";
 
 const initialLevels: Level[] = [
   {
     id: "level-1",
-    title: "Level 1: SELECT basics",
+    title: "Level 1: Easy",
     dbDiagram: "/db-diagrams/level1.png",
-    description: "Learn to retrieve data from a single table using SELECT statements.",
+    description: "Basic SQL queries to get you started with the fundamentals.",
     questions: [
       {
         id: "1",
@@ -32,7 +36,7 @@ const initialLevels: Level[] = [
       },
       {
         id: "2",
-        title: "Select specific columns (CustomerName, City) from the Customers table",
+        title: "Select specific columns from Customers",
         task: "Retrieve only the customer name and city for each customer.",
         completed: false,
         userQuery: "",
@@ -66,7 +70,7 @@ const initialLevels: Level[] = [
       },
       {
         id: "4",
-        title: "Select specific columns (ProductName, Price) from the Products table",
+        title: "Select specific columns from Products",
         task: "Retrieve only the product name and price for each product.",
         completed: false,
         userQuery: "",
@@ -83,7 +87,7 @@ const initialLevels: Level[] = [
       },
       {
         id: "5",
-        title: "Select all unique countries from the Customers table",
+        title: "Select unique countries from Customers",
         task: "Retrieve a list of unique countries where customers are from.",
         completed: false,
         userQuery: "",
@@ -103,13 +107,13 @@ const initialLevels: Level[] = [
   },
   {
     id: "level-2",
-    title: "Level 2: WHERE clause",
+    title: "Level 2: Medium",
     dbDiagram: "/db-diagrams/level1.png",
-    description: "Filter data based on specified conditions using the WHERE clause.",
+    description: "Intermediate SQL queries including filtering and sorting data.",
     questions: [
       {
         id: "6",
-        title: "Select customers from the city of London",
+        title: "Filter customers by city",
         task: "Retrieve all customers who are located in London.",
         completed: false,
         userQuery: "",
@@ -122,7 +126,7 @@ const initialLevels: Level[] = [
       },
       {
         id: "7",
-        title: "Select products with a price greater than 20",
+        title: "Filter products by price",
         task: "Retrieve all products that have a price greater than 20.",
         completed: false,
         userQuery: "",
@@ -136,139 +140,7 @@ const initialLevels: Level[] = [
       },
       {
         id: "8",
-        title: "Select customers from Germany",
-        task: "Retrieve all customers who are from Germany.",
-        completed: false,
-        userQuery: "",
-        expectedOutput: {
-          headers: ["CustomerID", "CustomerName", "ContactName", "Address", "City", "PostalCode", "Country"],
-          rows: [
-            ["1", "Alfreds Futterkiste", "Maria Anders", "Obere Str. 57", "Berlin", "12209", "Germany"]
-          ]
-        }
-      },
-      {
-        id: "9",
-        title: "Select products with a price less than or equal to 15",
-        task: "Retrieve all products that have a price less than or equal to 15.",
-        completed: false,
-        userQuery: "",
-        expectedOutput: {
-          headers: ["ProductID", "ProductName", "SupplierID", "CategoryID", "Unit", "Price"],
-          rows: [
-            // ["3", "Aniseed Syrup", "1", "2", "12 - 550 ml bottles", "10"] // Removed because no products satisfy this condition
-          ]
-        }
-      },
-      {
-        id: "10",
-        title: "Select customers not from Mexico",
-        task: "Retrieve all customers who are not from Mexico.",
-        completed: false,
-        userQuery: "",
-        expectedOutput: {
-          headers: ["CustomerID", "CustomerName", "ContactName", "Address", "City", "PostalCode", "Country"],
-          rows: [
-            ["1", "Alfreds Futterkiste", "Maria Anders", "Obere Str. 57", "Berlin", "12209", "Germany"],
-            ["4", "Around the Horn", "Thomas Hardy", "120 Hanover Sq.", "London", "WA1 1DP", "UK"],
-            ["5", "Berglunds snabbköp", "Christina Berglund", "Berguvsvägen 8", "Luleå", "S-958 22", "Sweden"]
-          ]
-        }
-      }
-    ],
-    completed: 0,
-    unlocked: false
-  },
-  {
-    id: "level-3",
-    title: "Level 3: AND & OR operators",
-    dbDiagram: "/db-diagrams/level1.png",
-    description: "Combine multiple conditions in a WHERE clause using AND and OR operators.",
-    questions: [
-      {
-        "id": "11",
-        "title": "Select customers from London or Berlin",
-        "task": "Retrieve all customers who are located in either London or Berlin.",
-        "completed": false,
-        "userQuery": "",
-        "expectedOutput": {
-          "headers": ["CustomerID", "CustomerName", "ContactName", "Address", "City", "PostalCode", "Country"],
-          "rows": [
-            ["1", "Alfreds Futterkiste", "Maria Anders", "Obere Str. 57", "Berlin", "12209", "Germany"],
-            ["4", "Around the Horn", "Thomas Hardy", "120 Hanover Sq.", "London", "WA1 1DP", "UK"]
-          ]
-        }
-      },
-      {
-        "id": "12",
-        "title": "Select products with price > 20 AND CategoryID = 2",
-        "task": "Retrieve all products that have a price greater than 20 and belong to CategoryID 2.",
-        "completed": false,
-        "userQuery": "",
-        "expectedOutput": {
-          "headers": ["ProductID", "ProductName", "SupplierID", "CategoryID", "Unit", "Price"],
-          "rows": [
-            ["4", "Chef Anton's Cajun Seasoning", "2", "2", "48 - 6 oz jars", "22"],
-            ["5", "Chef Anton's Gumbo Mix", "2", "2", "36 boxes", "21.35"]
-          ]
-        }
-      },
-      {
-        "id": "13",
-        "title": "Select customers from Mexico AND City = 'México D.F.'",
-        "task": "Retrieve all customers who are from Mexico and located in 'México D.F.'.",
-        "completed": false,
-        "userQuery": "",
-        "expectedOutput": {
-          "headers": ["CustomerID", "CustomerName", "ContactName", "Address", "City", "PostalCode", "Country"],
-          "rows": [
-            ["2", "Ana Trujillo Emparedados y helados", "Ana Trujillo", "Avda. de la Constitución 2222", "México D.F.", "05021", "Mexico"],
-            ["3", "Antonio Moreno Taquería", "Antonio Moreno", "Mataderos 2312", "México D.F.", "05023", "Mexico"]
-          ]
-        }
-      },
-      {
-        "id": "14",
-        "title": "Select products with price < 15 OR CategoryID = 1",
-        "task": "Retrieve all products that have a price less than 15 or belong to CategoryID 1.",
-        "completed": false,
-        "userQuery": "",
-        "expectedOutput": {
-          "headers": ["ProductID", "ProductName", "SupplierID", "CategoryID", "Unit", "Price"],
-          "rows": [
-            ["1", "Chais", "1", "1", "10 boxes x 20 bags", "18"],
-            ["2", "Chang", "1", "1", "24 - 12 oz bottles", "19"]
-          ]
-        }
-      },
-      {
-        "id": "15",
-        "title": "Select customers NOT from Germany AND NOT from UK",
-        "task": "Retrieve all customers who are not from Germany and not from the UK.",
-        "completed": false,
-        "userQuery": "",
-        "expectedOutput": {
-          "headers": ["CustomerID", "CustomerName", "ContactName", "Address", "City", "PostalCode", "Country"],
-          "rows": [
-            ["2", "Ana Trujillo Emparedados y helados", "Ana Trujillo", "Avda. de la Constitución 2222", "México D.F.", "05021", "Mexico"],
-            ["3", "Antonio Moreno Taquería", "Antonio Moreno", "Mataderos 2312", "México D.F.", "05023", "Mexico"],
-            ["5", "Berglunds snabbköp", "Christina Berglund", "Berguvsvägen 8", "Luleå", "S-958 22", "Sweden"]
-          ]
-        }
-      }
-    ],
-    completed: 0,
-    unlocked: false
-  },
-  {
-    id: "level-4",
-    title: "Level 4: ORDER BY clause",
-    dbDiagram: "/db-diagrams/level1.png",
-    description: "Sort the result-set of a query using the ORDER BY clause.",
-    questions: [
-      {
-        id: "16",
-        title: "Select all customers, ordered by CustomerName",
+        title: "Sort customers by name",
         task: "Retrieve all customers, ordered alphabetically by their CustomerName.",
         completed: false,
         userQuery: "",
@@ -284,8 +156,8 @@ const initialLevels: Level[] = [
         }
       },
       {
-        id: "17",
-        title: "Select all products, ordered by Price in descending order",
+        id: "9",
+        title: "Sort products by price (descending)",
         task: "Retrieve all products, ordered by their Price from highest to lowest.",
         completed: false,
         userQuery: "",
@@ -301,49 +173,14 @@ const initialLevels: Level[] = [
         }
       },
       {
-        id: "18",
-        title: "Select customers from Mexico, ordered by City",
-        task: "Retrieve all customers from Mexico, ordered alphabetically by their City.",
+        id: "10",
+        title: "Filter and sort customer data",
+        task: "Retrieve customers from Germany, ordered by their City.",
         completed: false,
         userQuery: "",
         expectedOutput: {
           headers: ["CustomerID", "CustomerName", "ContactName", "Address", "City", "PostalCode", "Country"],
           rows: [
-            ["2", "Ana Trujillo Emparedados y helados", "Ana Trujillo", "Avda. de la Constitución 2222", "México D.F.", "05021", "Mexico"],
-            ["3", "Antonio Moreno Taquería", "Antonio Moreno", "Mataderos 2312", "México D.F.", "05023", "Mexico"]
-          ]
-        }
-      },
-      {
-        id: "19",
-        title: "Select products ordered by CategoryID and then by Price",
-        task: "Retrieve all products, ordered first by their CategoryID and then by their Price in ascending order.",
-        completed: false,
-        userQuery: "",
-        expectedOutput: {
-          headers: ["ProductID", "ProductName", "SupplierID", "CategoryID", "Unit", "Price"],
-          rows: [
-            ["1", "Chais", "1", "1", "10 boxes x 20 bags", "18"],
-            ["2", "Chang", "1", "1", "24 - 12 oz bottles", "19"],
-            ["3", "Aniseed Syrup", "1", "2", "12 - 550 ml bottles", "10"],
-            ["5", "Chef Anton's Gumbo Mix", "2", "2", "36 boxes", "21.35"],
-            ["4", "Chef Anton's Cajun Seasoning", "2", "2", "48 - 6 oz jars", "22"]
-          ]
-        }
-      },
-      {
-        id: "20",
-        title: "Select customers ordered by Country in descending order",
-        task: "Retrieve all customers, ordered by their Country in descending order.",
-        completed: false,
-        userQuery: "",
-        expectedOutput: {
-          headers: ["CustomerID", "CustomerName", "ContactName", "Address", "City", "PostalCode", "Country"],
-          rows: [
-            ["5", "Berglunds snabbköp", "Christina Berglund", "Berguvsvägen 8", "Luleå", "S-958 22", "Sweden"],
-            ["4", "Around the Horn", "Thomas Hardy", "120 Hanover Sq.", "London", "WA1 1DP", "UK"],
-            ["2", "Ana Trujillo Emparedados y helados", "Ana Trujillo", "Avda. de la Constitución 2222", "México D.F.", "05021", "Mexico"],
-            ["3", "Antonio Moreno Taquería", "Antonio Moreno", "Mataderos 2312", "México D.F.", "05023", "Mexico"],
             ["1", "Alfreds Futterkiste", "Maria Anders", "Obere Str. 57", "Berlin", "12209", "Germany"]
           ]
         }
@@ -353,14 +190,42 @@ const initialLevels: Level[] = [
     unlocked: false
   },
   {
-    id: "level-5",
-    title: "Level 5: LIMIT clause",
+    id: "level-3",
+    title: "Level 3: Hard",
     dbDiagram: "/db-diagrams/level1.png",
-    description: "Limit the number of rows returned by a query using the LIMIT clause.",
+    description: "Advanced SQL queries with complex filtering, multiple conditions, and limits.",
     questions: [
       {
-        id: "21",
-        title: "Select the first 3 customers",
+        id: "11",
+        title: "Complex filtering with AND/OR",
+        task: "Retrieve all customers who are located in either London or Berlin.",
+        completed: false,
+        userQuery: "",
+        expectedOutput: {
+          headers: ["CustomerID", "CustomerName", "ContactName", "Address", "City", "PostalCode", "Country"],
+          rows: [
+            ["1", "Alfreds Futterkiste", "Maria Anders", "Obere Str. 57", "Berlin", "12209", "Germany"],
+            ["4", "Around the Horn", "Thomas Hardy", "120 Hanover Sq.", "London", "WA1 1DP", "UK"]
+          ]
+        }
+      },
+      {
+        id: "12",
+        title: "Multiple conditions with AND",
+        task: "Retrieve all products that have a price greater than 20 and belong to CategoryID 2.",
+        completed: false,
+        userQuery: "",
+        expectedOutput: {
+          headers: ["ProductID", "ProductName", "SupplierID", "CategoryID", "Unit", "Price"],
+          rows: [
+            ["4", "Chef Anton's Cajun Seasoning", "2", "2", "48 - 6 oz jars", "22"],
+            ["5", "Chef Anton's Gumbo Mix", "2", "2", "36 boxes", "21.35"]
+          ]
+        }
+      },
+      {
+        id: "13",
+        title: "Limiting results",
         task: "Retrieve the first 3 customers from the Customers table.",
         completed: false,
         userQuery: "",
@@ -374,8 +239,8 @@ const initialLevels: Level[] = [
         }
       },
       {
-        id: "22",
-        title: "Select the 2 most expensive products",
+        id: "14",
+        title: "Top expensive products",
         task: "Retrieve the 2 most expensive products from the Products table.",
         completed: false,
         userQuery: "",
@@ -388,44 +253,19 @@ const initialLevels: Level[] = [
         }
       },
       {
-        id: "23",
-        title: "Select the first customer from London",
-        task: "Retrieve the first customer from the Customers table who is located in London.",
-        completed: false,
-        userQuery: "",
-        expectedOutput: {
-          headers: ["CustomerID", "CustomerName", "ContactName", "Address", "City", "PostalCode", "Country"],
-          rows: [
-            ["4", "Around the Horn", "Thomas Hardy", "120 Hanover Sq.", "London", "WA1 1DP", "UK"]
-          ]
-        }
-      },
-      {
-        id: "24",
-        title: "Select 3 products with the lowest prices",
-        task: "Retrieve the 3 products with the lowest prices from the Products table.",
+        id: "15",
+        title: "Nested sorting",
+        task: "Retrieve all products, ordered first by their CategoryID and then by their Price.",
         completed: false,
         userQuery: "",
         expectedOutput: {
           headers: ["ProductID", "ProductName", "SupplierID", "CategoryID", "Unit", "Price"],
           rows: [
-            ["3", "Aniseed Syrup", "1", "2", "12 - 550 ml bottles", "10"],
             ["1", "Chais", "1", "1", "10 boxes x 20 bags", "18"],
-            ["2", "Chang", "1", "1", "24 - 12 oz bottles", "19"]
-          ]
-        }
-      },
-      {
-        id: "25",
-        title: "Select the last 2 customers when ordered by CustomerID",
-        task: "Retrieve the last 2 customers from the Customers table when ordered by CustomerID.",
-        completed: false,
-        userQuery: "",
-        expectedOutput: {
-          headers: ["CustomerID", "CustomerName", "ContactName", "Address", "City", "PostalCode", "Country"],
-          rows: [
-            ["4", "Around the Horn", "Thomas Hardy", "120 Hanover Sq.", "London", "WA1 1DP", "UK"],
-            ["5", "Berglunds snabbköp", "Christina Berglund", "Berguvsvägen 8", "Luleå", "S-958 22", "Sweden"]
+            ["2", "Chang", "1", "1", "24 - 12 oz bottles", "19"],
+            ["3", "Aniseed Syrup", "1", "2", "12 - 550 ml bottles", "10"],
+            ["5", "Chef Anton's Gumbo Mix", "2", "2", "36 boxes", "21.35"],
+            ["4", "Chef Anton's Cajun Seasoning", "2", "2", "48 - 6 oz jars", "22"]
           ]
         }
       }
@@ -502,18 +342,6 @@ const PracticeSQL = () => {
               
               const completedCount = updatedQuestions.filter(q => q.completed).length;
               
-              const currentLevelIndex = prevLevels.findIndex(l => l.id === levelId);
-              const nextLevelIndex = currentLevelIndex + 1;
-              
-              let updatedLevels = [...prevLevels];
-              
-              if (completedCount === 5 && nextLevelIndex < updatedLevels.length) {
-                updatedLevels[nextLevelIndex] = {
-                  ...updatedLevels[nextLevelIndex],
-                  unlocked: true
-                };
-              }
-              
               return { ...level, questions: updatedQuestions, completed: completedCount };
             }
             return level;
@@ -524,6 +352,19 @@ const PracticeSQL = () => {
       setLoadingStates(prev => ({ ...prev, [questionId]: false }));
       setCurrentQuestionId(questionId);
     }, 1000);
+  };
+
+  const handleUnlockNextLevel = (currentLevelId: string) => {
+    const currentLevelIndex = levels.findIndex(level => level.id === currentLevelId);
+    const nextLevelIndex = currentLevelIndex + 1;
+    
+    if (nextLevelIndex < levels.length) {
+      setLevels(prevLevels => 
+        prevLevels.map((level, index) => 
+          index === nextLevelIndex ? { ...level, unlocked: true } : level
+        )
+      );
+    }
   };
 
   return (
@@ -563,11 +404,37 @@ const PracticeSQL = () => {
                   onToggleHint={handleToggleHint}
                   onSubmit={handleSubmit}
                 />
+                
+                {level.completed === 5 && (
+                  <div className="mt-8 flex justify-center">
+                    {levels.findIndex(l => l.id === level.id) < levels.length - 1 && (
+                      <Button 
+                        onClick={() => handleUnlockNextLevel(level.id)}
+                        disabled={levels[levels.findIndex(l => l.id === level.id) + 1].unlocked}
+                        className="flex items-center gap-2"
+                      >
+                        {levels[levels.findIndex(l => l.id === level.id) + 1].unlocked ? (
+                          <>
+                            <Unlock className="h-4 w-4" />
+                            Next Level Unlocked
+                          </>
+                        ) : (
+                          <>
+                            <Lock className="h-4 w-4" />
+                            Unlock Next Level
+                          </>
+                        )}
+                      </Button>
+                    )}
+                  </div>
+                )}
               </TabsContent>
             ))}
           </Tabs>
         </div>
       </div>
+      
+      <Footer customClass="bg-gradient-to-r from-[#051525] to-[#0a2440] text-white" />
     </div>
   );
 };

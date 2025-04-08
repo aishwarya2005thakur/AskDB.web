@@ -9,10 +9,15 @@ import {
 } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
 import { Coffee, Database, Github, Heart, MessageSquare } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-const Footer = () => {
+interface FooterProps {
+  customClass?: string;
+}
+
+const Footer = ({ customClass }: FooterProps = {}) => {
   return (
-    <footer className="bg-white border-t mt-12">
+    <footer className={cn("bg-white border-t mt-12", customClass)}>
       <div className="max-w-screen-xl mx-auto px-4 py-8 md:py-12">
         {/* FAQ Section */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -50,17 +55,17 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-medium mb-4">Quick Links</h3>
             <nav className="flex flex-col space-y-2 mb-8">
-              <Link to="/" className="text-gray-600 hover:text-gray-900 transition-colors">Home</Link>
-              <Link to="/write-queries" className="text-gray-600 hover:text-gray-900 transition-colors">Learn SQL</Link>
-              <Link to="/practice-sql" className="text-gray-600 hover:text-gray-900 transition-colors">Practice SQL</Link>
-              <Link to="/" className="text-gray-600 hover:text-gray-900 transition-colors">Upload DB</Link>
+              <Link to="/" className={cn("hover:text-gray-300 transition-colors", customClass ? "text-white" : "text-gray-600 hover:text-gray-900")}>Home</Link>
+              <Link to="/write-queries" className={cn("hover:text-gray-300 transition-colors", customClass ? "text-white" : "text-gray-600 hover:text-gray-900")}>Learn SQL</Link>
+              <Link to="/practice-sql" className={cn("hover:text-gray-300 transition-colors", customClass ? "text-white" : "text-gray-600 hover:text-gray-900")}>Practice SQL</Link>
+              <Link to="/" className={cn("hover:text-gray-300 transition-colors", customClass ? "text-white" : "text-gray-600 hover:text-gray-900")}>Upload DB</Link>
             </nav>
             
             <h3 className="text-lg font-medium mb-4">Contact / Feedback</h3>
-            <p className="text-gray-600">
+            <p className={cn(customClass ? "text-gray-300" : "text-gray-600")}>
               Got questions or suggestions? <a 
                 href="https://docs.google.com/forms/d/e/1FAIpQLScubHD0oWYiX-zEBjMWaAMsXuvoyEYpT-n3v41UzzowA91BNQ/viewform?usp=header" 
-                className="text-blue-600 hover:underline"
+                className={cn("hover:underline", customClass ? "text-blue-300" : "text-blue-600")}
                 target="_blank" 
                 rel="noopener noreferrer"
               >
@@ -70,42 +75,42 @@ const Footer = () => {
           </div>
         </div>
         
-        <Separator className="my-8" />
+        <Separator className={cn("my-8", customClass ? "bg-gray-700" : "")} />
         
         {/* Credits Section */}
         <div className="text-center mb-6">
           <h3 className="text-lg font-medium mb-3">Tech Stack</h3>
-          <p className="flex items-center justify-center flex-wrap gap-2 text-gray-600">
+          <p className={cn("flex items-center justify-center flex-wrap gap-2", customClass ? "text-gray-300" : "text-gray-600")}>
             Built using React, FastAPI, MySQL, OpenAI API, and a lot of <Coffee className="inline h-4 w-4" />
           </p>
         </div>
         
         {/* Open Source Note */}
-        <div className="bg-gray-50 p-4 rounded-lg mb-6 text-center">
-          <p className="text-sm text-gray-600 mb-2">
+        <div className={cn("p-4 rounded-lg mb-6 text-center", customClass ? "bg-[#0c2d4d]" : "bg-gray-50")}>
+          <p className={cn("text-sm mb-2", customClass ? "text-gray-300" : "text-gray-600")}>
             <span className="font-medium">💡 AskDB is a small experimental project</span> built with lots of love (and caffeine) 
             by a group of 2nd-year engineering students.
           </p>
-          <p className="text-sm text-gray-600 mb-2">
+          <p className={cn("text-sm mb-2", customClass ? "text-gray-300" : "text-gray-600")}>
             If you run into any bugs or hiccups, please be kind — we're still learning and building in public! 🛠️
           </p>
-          <p className="text-sm text-gray-600 flex items-center justify-center">
+          <p className={cn("text-sm flex items-center justify-center", customClass ? "text-gray-300" : "text-gray-600")}>
             <span className="mr-1">🧑‍💻 Check out the open-source code on</span>
             <a 
               href="https://github.com/aishwarya2005thakur/AskDB" 
-              className="text-blue-600 hover:underline flex items-center ml-1"
+              className={cn("hover:underline flex items-center ml-1", customClass ? "text-blue-300" : "text-blue-600")}
               target="_blank" 
               rel="noopener noreferrer"
             >
               GitHub <Github className="inline h-4 w-4 ml-1" />
             </a>
             <span className="mx-1">— contributions, feedback, and good vibes are always welcome.</span>
-            <Heart className="inline h-4 w-4 text-blue-500" />
+            <Heart className={cn("inline h-4 w-4", customClass ? "text-blue-300" : "text-blue-500")} />
           </p>
         </div>
         
         {/* Legal / Copyright */}
-        <div className="text-center text-sm text-gray-500">
+        <div className={cn("text-center text-sm", customClass ? "text-gray-400" : "text-gray-500")}>
           <p>© 2025 AskDB. For educational use only.</p>
         </div>
       </div>

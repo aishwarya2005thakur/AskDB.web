@@ -1,3 +1,4 @@
+
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
@@ -36,31 +37,31 @@ const QuestionList = ({
             question.completed ? "border-green-400 bg-green-50" : "border-slate-200"
           )}
         >
-          <div className="flex items-center justify-between p-4">
-            <div className="flex items-center gap-3">
-              <div className={cn(
-                "flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold",
-                question.completed 
-                  ? "bg-green-100 text-green-700" 
-                  : "bg-slate-100 text-slate-700"
-              )}>
-                {index + 1}
+          <CollapsibleTrigger className="w-full">
+            <div className="flex items-center justify-between p-4 cursor-pointer hover:bg-slate-50">
+              <div className="flex items-center gap-3">
+                <div className={cn(
+                  "flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold",
+                  question.completed 
+                    ? "bg-green-100 text-green-700" 
+                    : "bg-slate-100 text-slate-700"
+                )}>
+                  {index + 1}
+                </div>
+                <div className="font-medium text-left">
+                  {question.title}
+                  {question.completed && (
+                    <span className="ml-2 text-green-600 text-sm">
+                      ✓ Completed
+                    </span>
+                  )}
+                </div>
               </div>
-              <div className="font-medium">
-                {question.title}
-                {question.completed && (
-                  <span className="ml-2 text-green-600 text-sm">
-                    ✓ Completed
-                  </span>
-                )}
-              </div>
-            </div>
-            <CollapsibleTrigger asChild>
-              <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="sm" className="pointer-events-none">
                 <ChevronDown className="h-4 w-4" />
               </Button>
-            </CollapsibleTrigger>
-          </div>
+            </div>
+          </CollapsibleTrigger>
           
           <CollapsibleContent>
             <QuestionItem

@@ -12,7 +12,7 @@ const WriteQueries = () => {
         <LearnSQL />
       </div>
       
-      <Footer />
+      <Footer customClass="bg-gradient-to-r from-[#051525] to-[#0a2440] text-white" />
     </div>
   );
 };
