@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import NavBar from "@/components/NavBar";
@@ -438,17 +437,19 @@ const initialLevels: Level[] = [
 
 const PracticeSQL = () => {
   const [levels, setLevels] = useState<Level[]>(initialLevels);
-  const [validationResult, setValidationResult] = useState<ValidationResult | null>(null);
+  const [validationResults, setValidationResults] = useState<Record<string, ValidationResult>>({});
   const [currentQuestionId, setCurrentQuestionId] = useState<string | null>(null);
+  const [loadingStates, setLoadingStates] = useState<Record<string, boolean>>({});
+  const [openHints, setOpenHints] = useState<Record<string, boolean>>({});
 
-  const handleUpdateQuestion = (levelId: string, questionId: string, userQuery: string) => {
+  const handleQueryChange = (levelId: string, questionId: string, value: string) => {
     setLevels(prevLevels =>
       prevLevels.map(level =>
         level.id === levelId
           ? {
               ...level,
               questions: level.questions.map(question =>
-                question.id === questionId ? { ...question, userQuery } : question
+                question.id === questionId ? { ...question, userQuery: value } : question
               )
             }
           : level
@@ -456,24 +457,70 @@ const PracticeSQL = () => {
     );
   };
 
-  const handleValidateQuery = (levelId: string, questionId: string, isCorrect: boolean) => {
-    setLevels(prevLevels =>
-      prevLevels.map(level => {
-        if (level.id === levelId) {
-          const updatedQuestions = level.questions.map(question => {
-            if (question.id === questionId) {
-              return { ...question, completed: isCorrect };
-            }
-            return question;
-          });
+  const handleToggleHint = (questionId: string) => {
+    setOpenHints(prev => ({
+      ...prev,
+      [questionId]: !prev[questionId]
+    }));
+  };
 
-          const completedCount = updatedQuestions.filter(q => q.completed).length;
-
-          return { ...level, questions: updatedQuestions, completed: completedCount };
+  const handleSubmit = (levelId: string, questionId: string) => {
+    setLoadingStates(prev => ({ ...prev, [questionId]: true }));
+    
+    setTimeout(() => {
+      const level = levels.find(l => l.id === levelId);
+      const question = level?.questions.find(q => q.id === questionId);
+      
+      if (!question) return;
+      
+      const isCorrect = question.userQuery.toLowerCase().includes('select');
+      
+      setValidationResults(prev => ({
+        ...prev,
+        [questionId]: {
+          correct: isCorrect,
+          userOutput: isCorrect 
+            ? question.expectedOutput 
+            : {
+                headers: question.expectedOutput.headers,
+                rows: [["No matching data found"]]
+              },
+          expectedOutput: question.expectedOutput
         }
-        return level;
-      })
-    );
+      }));
+      
+      if (isCorrect) {
+        setLevels(prevLevels =>
+          prevLevels.map(level => {
+            if (level.id === levelId) {
+              const updatedQuestions = level.questions.map(q => {
+                if (q.id === questionId) {
+                  return { ...q, completed: true };
+                }
+                return q;
+              });
+              
+              const completedCount = updatedQuestions.filter(q => q.completed).length;
+              
+              let updatedLevels = [...prevLevels];
+              
+              if (completedCount === 5 && nextLevelIndex < updatedLevels.length) {
+                updatedLevels[nextLevelIndex] = {
+                  ...updatedLevels[nextLevelIndex],
+                  unlocked: true
+                };
+              }
+              
+              return { ...level, questions: updatedQuestions, completed: completedCount };
+            }
+            return level;
+          })
+        );
+      }
+      
+      setLoadingStates(prev => ({ ...prev, [questionId]: false }));
+      setCurrentQuestionId(questionId);
+    }, 1000);
   };
 
   return (
@@ -500,16 +547,18 @@ const PracticeSQL = () => {
                   title={level.title}
                   description={level.description}
                   dbDiagram={level.dbDiagram}
-                  completed={level.completed}
-                  total={5}
+                  completedCount={level.completed}
                 />
                 
                 <QuestionList
+                  levelId={level.id}
                   questions={level.questions}
-                  onUpdateQuestion={handleUpdateQuestion}
-                  onValidateQuery={handleValidateQuery}
-                  validationResult={validationResult}
-                  currentQuestionId={currentQuestionId}
+                  loadingStates={loadingStates}
+                  openHints={openHints}
+                  validationResults={validationResults}
+                  onQueryChange={handleQueryChange}
+                  onToggleHint={handleToggleHint}
+                  onSubmit={handleSubmit}
                 />
               </TabsContent>
             ))}
