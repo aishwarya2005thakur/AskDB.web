@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import NavBar from "@/components/NavBar";
@@ -265,16 +266,16 @@ const initialLevels: Level[] = [
     title: "Level 4: ORDER BY clause",
     dbDiagram: "/db-diagrams/level1.png",
     description: "Sort the result-set of a query using the ORDER BY clause.",
-    questions": [
+    questions: [
       {
-        "id": "16",
-        "title": "Select all customers, ordered by CustomerName",
-        "task": "Retrieve all customers, ordered alphabetically by their CustomerName.",
-        "completed": false,
-        "userQuery": "",
-        "expectedOutput": {
-          "headers": ["CustomerID", "CustomerName", "ContactName", "Address", "City", "PostalCode", "Country"],
-          "rows": [
+        id: "16",
+        title: "Select all customers, ordered by CustomerName",
+        task: "Retrieve all customers, ordered alphabetically by their CustomerName.",
+        completed: false,
+        userQuery: "",
+        expectedOutput: {
+          headers: ["CustomerID", "CustomerName", "ContactName", "Address", "City", "PostalCode", "Country"],
+          rows: [
             ["1", "Alfreds Futterkiste", "Maria Anders", "Obere Str. 57", "Berlin", "12209", "Germany"],
             ["2", "Ana Trujillo Emparedados y helados", "Ana Trujillo", "Avda. de la Constitución 2222", "México D.F.", "05021", "Mexico"],
             ["3", "Antonio Moreno Taquería", "Antonio Moreno", "Mataderos 2312", "México D.F.", "05023", "Mexico"],
@@ -284,14 +285,14 @@ const initialLevels: Level[] = [
         }
       },
       {
-        "id": "17",
-        "title": "Select all products, ordered by Price in descending order",
-        "task": "Retrieve all products, ordered by their Price from highest to lowest.",
-        "completed": false,
-        "userQuery": "",
-        "expectedOutput": {
-          "headers": ["ProductID", "ProductName", "SupplierID", "CategoryID", "Unit", "Price"],
-          "rows": [
+        id: "17",
+        title: "Select all products, ordered by Price in descending order",
+        task: "Retrieve all products, ordered by their Price from highest to lowest.",
+        completed: false,
+        userQuery: "",
+        expectedOutput: {
+          headers: ["ProductID", "ProductName", "SupplierID", "CategoryID", "Unit", "Price"],
+          rows: [
             ["4", "Chef Anton's Cajun Seasoning", "2", "2", "48 - 6 oz jars", "22"],
             ["5", "Chef Anton's Gumbo Mix", "2", "2", "36 boxes", "21.35"],
             ["2", "Chang", "1", "1", "24 - 12 oz bottles", "19"],
@@ -301,28 +302,28 @@ const initialLevels: Level[] = [
         }
       },
       {
-        "id": "18",
-        "title": "Select customers from Mexico, ordered by City",
-        "task": "Retrieve all customers from Mexico, ordered alphabetically by their City.",
-        "completed": false,
-        "userQuery": "",
-        "expectedOutput": {
-          "headers": ["CustomerID", "CustomerName", "ContactName", "Address", "City", "PostalCode", "Country"],
-          "rows": [
+        id: "18",
+        title: "Select customers from Mexico, ordered by City",
+        task: "Retrieve all customers from Mexico, ordered alphabetically by their City.",
+        completed: false,
+        userQuery: "",
+        expectedOutput: {
+          headers: ["CustomerID", "CustomerName", "ContactName", "Address", "City", "PostalCode", "Country"],
+          rows: [
             ["2", "Ana Trujillo Emparedados y helados", "Ana Trujillo", "Avda. de la Constitución 2222", "México D.F.", "05021", "Mexico"],
             ["3", "Antonio Moreno Taquería", "Antonio Moreno", "Mataderos 2312", "México D.F.", "05023", "Mexico"]
           ]
         }
       },
       {
-        "id": "19",
-        "title": "Select products ordered by CategoryID and then by Price",
-        "task": "Retrieve all products, ordered first by their CategoryID and then by their Price in ascending order.",
-        "completed": false,
-        "userQuery": "",
-        "expectedOutput": {
-          "headers": ["ProductID", "ProductName", "SupplierID", "CategoryID", "Unit", "Price"],
-          "rows": [
+        id: "19",
+        title: "Select products ordered by CategoryID and then by Price",
+        task: "Retrieve all products, ordered first by their CategoryID and then by their Price in ascending order.",
+        completed: false,
+        userQuery: "",
+        expectedOutput: {
+          headers: ["ProductID", "ProductName", "SupplierID", "CategoryID", "Unit", "Price"],
+          rows: [
             ["1", "Chais", "1", "1", "10 boxes x 20 bags", "18"],
             ["2", "Chang", "1", "1", "24 - 12 oz bottles", "19"],
             ["3", "Aniseed Syrup", "1", "2", "12 - 550 ml bottles", "10"],
@@ -332,14 +333,14 @@ const initialLevels: Level[] = [
         }
       },
       {
-        "id": "20",
-        "title": "Select customers ordered by Country in descending order",
-        "task": "Retrieve all customers, ordered by their Country in descending order.",
-        "completed": false,
-        "userQuery": "",
-        "expectedOutput": {
-          "headers": ["CustomerID", "CustomerName", "ContactName", "Address", "City", "PostalCode", "Country"],
-          "rows": [
+        id: "20",
+        title: "Select customers ordered by Country in descending order",
+        task: "Retrieve all customers, ordered by their Country in descending order.",
+        completed: false,
+        userQuery: "",
+        expectedOutput: {
+          headers: ["CustomerID", "CustomerName", "ContactName", "Address", "City", "PostalCode", "Country"],
+          rows: [
             ["5", "Berglunds snabbköp", "Christina Berglund", "Berguvsvägen 8", "Luleå", "S-958 22", "Sweden"],
             ["4", "Around the Horn", "Thomas Hardy", "120 Hanover Sq.", "London", "WA1 1DP", "UK"],
             ["2", "Ana Trujillo Emparedados y helados", "Ana Trujillo", "Avda. de la Constitución 2222", "México D.F.", "05021", "Mexico"],
@@ -357,16 +358,16 @@ const initialLevels: Level[] = [
     title: "Level 5: LIMIT clause",
     dbDiagram: "/db-diagrams/level1.png",
     description: "Limit the number of rows returned by a query using the LIMIT clause.",
-    questions": [
+    questions: [
       {
-        "id": "21",
-        "title": "Select the first 3 customers",
-        "task": "Retrieve the first 3 customers from the Customers table.",
-        "completed": false,
-        "userQuery": "",
-        "expectedOutput": {
-          "headers": ["CustomerID", "CustomerName", "ContactName", "Address", "City", "PostalCode", "Country"],
-          "rows": [
+        id: "21",
+        title: "Select the first 3 customers",
+        task: "Retrieve the first 3 customers from the Customers table.",
+        completed: false,
+        userQuery: "",
+        expectedOutput: {
+          headers: ["CustomerID", "CustomerName", "ContactName", "Address", "City", "PostalCode", "Country"],
+          rows: [
             ["1", "Alfreds Futterkiste", "Maria Anders", "Obere Str. 57", "Berlin", "12209", "Germany"],
             ["2", "Ana Trujillo Emparedados y helados", "Ana Trujillo", "Avda. de la Constitución 2222", "México D.F.", "05021", "Mexico"],
             ["3", "Antonio Moreno Taquería", "Antonio Moreno", "Mataderos 2312", "México D.F.", "05023", "Mexico"]
@@ -374,41 +375,41 @@ const initialLevels: Level[] = [
         }
       },
       {
-        "id": "22",
-        "title": "Select the 2 most expensive products",
-        "task": "Retrieve the 2 most expensive products from the Products table.",
-        "completed": false,
-        "userQuery": "",
-        "expectedOutput": {
-          "headers": ["ProductID", "ProductName", "SupplierID", "CategoryID", "Unit", "Price"],
-          "rows": [
+        id: "22",
+        title: "Select the 2 most expensive products",
+        task: "Retrieve the 2 most expensive products from the Products table.",
+        completed: false,
+        userQuery: "",
+        expectedOutput: {
+          headers: ["ProductID", "ProductName", "SupplierID", "CategoryID", "Unit", "Price"],
+          rows: [
             ["4", "Chef Anton's Cajun Seasoning", "2", "2", "48 - 6 oz jars", "22"],
             ["5", "Chef Anton's Gumbo Mix", "2", "2", "36 boxes", "21.35"]
           ]
         }
       },
       {
-        "id": "23",
-        "title": "Select the first customer from London",
-        "task": "Retrieve the first customer from the Customers table who is located in London.",
-        "completed": false,
-        "userQuery": "",
-        "expectedOutput": {
-          "headers": ["CustomerID", "CustomerName", "ContactName", "Address", "City", "PostalCode", "Country"],
-          "rows": [
+        id: "23",
+        title: "Select the first customer from London",
+        task: "Retrieve the first customer from the Customers table who is located in London.",
+        completed: false,
+        userQuery: "",
+        expectedOutput: {
+          headers: ["CustomerID", "CustomerName", "ContactName", "Address", "City", "PostalCode", "Country"],
+          rows: [
             ["4", "Around the Horn", "Thomas Hardy", "120 Hanover Sq.", "London", "WA1 1DP", "UK"]
           ]
         }
       },
       {
-        "id": "24",
-        "title": "Select 3 products with the lowest prices",
-        "task": "Retrieve the 3 products with the lowest prices from the Products table.",
-        "completed": false,
-        "userQuery": "",
-        "expectedOutput": {
-          "headers": ["ProductID", "ProductName", "SupplierID", "CategoryID", "Unit", "Price"],
-          "rows": [
+        id: "24",
+        title: "Select 3 products with the lowest prices",
+        task: "Retrieve the 3 products with the lowest prices from the Products table.",
+        completed: false,
+        userQuery: "",
+        expectedOutput: {
+          headers: ["ProductID", "ProductName", "SupplierID", "CategoryID", "Unit", "Price"],
+          rows: [
             ["3", "Aniseed Syrup", "1", "2", "12 - 550 ml bottles", "10"],
             ["1", "Chais", "1", "1", "10 boxes x 20 bags", "18"],
             ["2", "Chang", "1", "1", "24 - 12 oz bottles", "19"]
@@ -416,14 +417,14 @@ const initialLevels: Level[] = [
         }
       },
       {
-        "id": "25",
-        "title": "Select the last 2 customers when ordered by CustomerID",
-        "task": "Retrieve the last 2 customers from the Customers table when ordered by CustomerID.",
-        "completed": false,
-        "userQuery": "",
-        "expectedOutput": {
-          "headers": ["CustomerID", "CustomerName", "ContactName", "Address", "City", "PostalCode", "Country"],
-          "rows": [
+        id: "25",
+        title: "Select the last 2 customers when ordered by CustomerID",
+        task: "Retrieve the last 2 customers from the Customers table when ordered by CustomerID.",
+        completed: false,
+        userQuery: "",
+        expectedOutput: {
+          headers: ["CustomerID", "CustomerName", "ContactName", "Address", "City", "PostalCode", "Country"],
+          rows: [
             ["4", "Around the Horn", "Thomas Hardy", "120 Hanover Sq.", "London", "WA1 1DP", "UK"],
             ["5", "Berglunds snabbköp", "Christina Berglund", "Berguvsvägen 8", "Luleå", "S-958 22", "Sweden"]
           ]
