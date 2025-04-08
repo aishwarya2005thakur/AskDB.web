@@ -502,6 +502,9 @@ const PracticeSQL = () => {
               
               const completedCount = updatedQuestions.filter(q => q.completed).length;
               
+              const currentLevelIndex = prevLevels.findIndex(l => l.id === levelId);
+              const nextLevelIndex = currentLevelIndex + 1;
+              
               let updatedLevels = [...prevLevels];
               
               if (completedCount === 5 && nextLevelIndex < updatedLevels.length) {
