@@ -1,3 +1,4 @@
+
 import NavBar from "@/components/NavBar";
 import LearnSQL from "@/components/LearnSQL";
 import Footer from "@/components/Footer";

@@ -5,7 +5,6 @@ import LevelTabs from "@/components/practice/LevelTabs";
 import LevelHeader from "@/components/practice/LevelHeader";
 import QuestionList from "@/components/practice/QuestionList";
 import { Level, Question, ValidationResult } from "@/types/practiceSQL";
-import Footer from "@/components/Footer";
 
 const initialLevels: Level[] = [
   {
@@ -516,8 +515,6 @@ const PracticeSQL = () => {
           </Tabs>
         </div>
       </div>
-      
-      <Footer />
     </div>
   );
 };
