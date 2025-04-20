@@ -17,7 +17,7 @@ app = FastAPI()
 # Optional: CORS for frontend interaction
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Replace with your frontend domain in production
+    allow_origins=["uploadify-pdf-wizard-90.lovable.app"], # front end domain 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -32,8 +32,8 @@ DB_HOST = os.getenv("DB_HOST")
 DB_PORT = os.getenv("DB_PORT")
 DB_NAME = os.getenv("DB_NAME")
 
-print("PASSWORD:", repr(DB_PASSWORD))  # this will show any hidden characters
-print("HOST:", repr(DB_HOST))  # this will show any hidden characters
+print("PASSWORD:", repr(DB_PASSWORD))  # this will show any hidden characters in pasword
+print("HOST:", repr(DB_HOST))  # this will show any hidden characters in host name 
 
 DATABASE_URL = f"mysql+mysqlconnector://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 engine = create_engine(DATABASE_URL)
