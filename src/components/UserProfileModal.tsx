@@ -65,6 +65,7 @@ export const UserProfileModal = ({ open, onOpenChange }: UserProfileModalProps) 
       if (connected) {
         await disconnect();
       } else {
+        // The connect function will show the wallet selection modal
         await connect();
       }
     } catch (err: any) {
