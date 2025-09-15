@@ -9,6 +9,8 @@ import { Level, Question, ValidationResult } from "@/types/practiceSQL";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Lock, Unlock } from "lucide-react";
+import { CoinProvider, useCoins, getCoinReward } from "@/hooks/useCoins";
+import CoinCounter from "@/components/CoinCounter";
 
 const initialLevels: Level[] = [
   {
@@ -23,6 +25,7 @@ const initialLevels: Level[] = [
         task: "Retrieve all columns for all customers.",
         completed: false,
         userQuery: "",
+        difficulty: "easy",
         expectedOutput: {
           headers: ["CustomerID", "CustomerName", "ContactName", "Address", "City", "PostalCode", "Country"],
           rows: [
@@ -40,6 +43,7 @@ const initialLevels: Level[] = [
         task: "Retrieve only the customer name and city for each customer.",
         completed: false,
         userQuery: "",
+        difficulty: "easy",
         expectedOutput: {
           headers: ["CustomerName", "City"],
           rows: [
@@ -57,6 +61,7 @@ const initialLevels: Level[] = [
         task: "Retrieve all columns for all products.",
         completed: false,
         userQuery: "",
+        difficulty: "easy",
         expectedOutput: {
           headers: ["ProductID", "ProductName", "SupplierID", "CategoryID", "Unit", "Price"],
           rows: [
@@ -74,6 +79,7 @@ const initialLevels: Level[] = [
         task: "Retrieve only the product name and price for each product.",
         completed: false,
         userQuery: "",
+        difficulty: "easy",
         expectedOutput: {
           headers: ["ProductName", "Price"],
           rows: [
@@ -91,6 +97,7 @@ const initialLevels: Level[] = [
         task: "Retrieve a list of unique countries where customers are from.",
         completed: false,
         userQuery: "",
+        difficulty: "easy",
         expectedOutput: {
           headers: ["Country"],
           rows: [
@@ -117,6 +124,7 @@ const initialLevels: Level[] = [
         task: "Retrieve all customers who are located in London.",
         completed: false,
         userQuery: "",
+        difficulty: "medium",
         expectedOutput: {
           headers: ["CustomerID", "CustomerName", "ContactName", "Address", "City", "PostalCode", "Country"],
           rows: [
@@ -130,6 +138,7 @@ const initialLevels: Level[] = [
         task: "Retrieve all products that have a price greater than 20.",
         completed: false,
         userQuery: "",
+        difficulty: "medium",
         expectedOutput: {
           headers: ["ProductID", "ProductName", "SupplierID", "CategoryID", "Unit", "Price"],
           rows: [
@@ -144,6 +153,7 @@ const initialLevels: Level[] = [
         task: "Retrieve all customers, ordered alphabetically by their CustomerName.",
         completed: false,
         userQuery: "",
+        difficulty: "medium",
         expectedOutput: {
           headers: ["CustomerID", "CustomerName", "ContactName", "Address", "City", "PostalCode", "Country"],
           rows: [
@@ -161,6 +171,7 @@ const initialLevels: Level[] = [
         task: "Retrieve all products, ordered by their Price from highest to lowest.",
         completed: false,
         userQuery: "",
+        difficulty: "medium",
         expectedOutput: {
           headers: ["ProductID", "ProductName", "SupplierID", "CategoryID", "Unit", "Price"],
           rows: [
@@ -178,6 +189,7 @@ const initialLevels: Level[] = [
         task: "Retrieve customers from Germany, ordered by their City.",
         completed: false,
         userQuery: "",
+        difficulty: "medium",
         expectedOutput: {
           headers: ["CustomerID", "CustomerName", "ContactName", "Address", "City", "PostalCode", "Country"],
           rows: [
@@ -201,6 +213,7 @@ const initialLevels: Level[] = [
         task: "Retrieve all customers who are located in either London or Berlin.",
         completed: false,
         userQuery: "",
+        difficulty: "hard",
         expectedOutput: {
           headers: ["CustomerID", "CustomerName", "ContactName", "Address", "City", "PostalCode", "Country"],
           rows: [
@@ -215,6 +228,7 @@ const initialLevels: Level[] = [
         task: "Retrieve all products that have a price greater than 20 and belong to CategoryID 2.",
         completed: false,
         userQuery: "",
+        difficulty: "hard",
         expectedOutput: {
           headers: ["ProductID", "ProductName", "SupplierID", "CategoryID", "Unit", "Price"],
           rows: [
@@ -229,6 +243,7 @@ const initialLevels: Level[] = [
         task: "Retrieve the first 3 customers from the Customers table.",
         completed: false,
         userQuery: "",
+        difficulty: "hard",
         expectedOutput: {
           headers: ["CustomerID", "CustomerName", "ContactName", "Address", "City", "PostalCode", "Country"],
           rows: [
@@ -244,6 +259,7 @@ const initialLevels: Level[] = [
         task: "Retrieve the 2 most expensive products from the Products table.",
         completed: false,
         userQuery: "",
+        difficulty: "hard",
         expectedOutput: {
           headers: ["ProductID", "ProductName", "SupplierID", "CategoryID", "Unit", "Price"],
           rows: [
@@ -258,6 +274,7 @@ const initialLevels: Level[] = [
         task: "Retrieve all products, ordered first by their CategoryID and then by their Price.",
         completed: false,
         userQuery: "",
+        difficulty: "hard",
         expectedOutput: {
           headers: ["ProductID", "ProductName", "SupplierID", "CategoryID", "Unit", "Price"],
           rows: [
@@ -275,12 +292,13 @@ const initialLevels: Level[] = [
   }
 ];
 
-const PracticeSQL = () => {
+const PracticeSQLContent = () => {
   const [levels, setLevels] = useState<Level[]>(initialLevels);
   const [validationResults, setValidationResults] = useState<Record<string, ValidationResult>>({});
   const [currentQuestionId, setCurrentQuestionId] = useState<string | null>(null);
   const [loadingStates, setLoadingStates] = useState<Record<string, boolean>>({});
   const [openHints, setOpenHints] = useState<Record<string, boolean>>({});
+  const { addCoins } = useCoins();
 
   const handleQueryChange = (levelId: string, questionId: string, value: string) => {
     setLevels(prevLevels =>
@@ -334,7 +352,10 @@ const PracticeSQL = () => {
           prevLevels.map(level => {
             if (level.id === levelId) {
               const updatedQuestions = level.questions.map(q => {
-                if (q.id === questionId) {
+                if (q.id === questionId && !q.completed) {
+                  // Add coins for newly completed question
+                  const coinReward = getCoinReward(q.difficulty || 'easy');
+                  addCoins(coinReward, q.difficulty || 'easy');
                   return { ...q, completed: true };
                 }
                 return q;
@@ -373,7 +394,10 @@ const PracticeSQL = () => {
       
       <div className="flex-1 p-4 md:p-8 container">
         <div className="max-w-screen-lg mx-auto">
-          <div className="text-center mb-10">
+          <div className="text-center mb-10 relative">
+            <div className="absolute top-0 right-0">
+              <CoinCounter />
+            </div>
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
               Practice SQL
             </h1>
@@ -436,6 +460,14 @@ const PracticeSQL = () => {
       
       <Footer customClass="bg-gradient-to-r from-[#051525] to-[#0a2440] text-white" />
     </div>
+  );
+};
+
+const PracticeSQL = () => {
+  return (
+    <CoinProvider>
+      <PracticeSQLContent />
+    </CoinProvider>
   );
 };
 
