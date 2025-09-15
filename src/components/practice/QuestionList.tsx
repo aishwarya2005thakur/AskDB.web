@@ -5,6 +5,7 @@ import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import QuestionItem from "./QuestionItem";
 import { Question, ValidationResult } from "@/types/practiceSQL";
+import { getCoinReward } from "@/hooks/useCoins";
 
 interface QuestionListProps {
   levelId: string;
@@ -48,13 +49,17 @@ const QuestionList = ({
                 )}>
                   {index + 1}
                 </div>
-                <div className="font-medium text-left">
+                <div className="font-medium text-left flex-1">
                   {question.title}
                   {question.completed && (
                     <span className="ml-2 text-green-600 text-sm">
                       ✓ Completed
                     </span>
                   )}
+                </div>
+                <div className="flex items-center gap-1 text-xs font-medium text-amber-600 bg-amber-50 px-2 py-1 rounded-full border border-amber-200">
+                  <span className="text-sm">🪙</span>
+                  <span>x{getCoinReward(question.difficulty || 'easy')}</span>
                 </div>
               </div>
               <Button variant="ghost" size="sm" className="pointer-events-none">

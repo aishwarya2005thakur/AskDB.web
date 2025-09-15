@@ -11,6 +11,7 @@ export interface Question {
   completed: boolean;
   userQuery: string;
   expectedOutput: OutputData;
+  difficulty?: 'easy' | 'medium' | 'hard';
 }
 
 export interface Level {
