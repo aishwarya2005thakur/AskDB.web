@@ -4,7 +4,7 @@ import { useWallet as useAptosWallet } from '@aptos-labs/wallet-adapter-react';
 interface WalletContextType {
   connected: boolean;
   account: any;
-  connect: (walletName?: string) => void;
+  connect: (walletName?: string) => Promise<void>;
   disconnect: () => void;
   walletAddress: string | null;
 }
@@ -26,16 +26,15 @@ interface WalletProviderProps {
 export const WalletProvider = ({ children }: WalletProviderProps) => {
   const { connected, account, connect: aptosConnect, disconnect } = useAptosWallet();
 
-  const walletAddress = account?.address || null;
+  const walletAddress = account?.address ? String(account.address) : null;
 
   const connect = async (walletName?: string) => {
     try {
-      // Get available wallets and connect to the first one if no specific wallet requested
       if (walletName) {
-        await aptosConnect(walletName);
+        await aptosConnect(walletName as any);
       } else {
-        // Just call connect without arguments - the wallet adapter will handle wallet selection
-        await aptosConnect('Petra' as any); // Default to Petra wallet
+        // Connect to any available wallet
+        await aptosConnect('Petra' as any);
       }
     } catch (error) {
       console.error('Failed to connect wallet:', error);
