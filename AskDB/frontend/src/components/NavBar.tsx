@@ -6,7 +6,7 @@ import Logo from "./Logo";
 import { Button } from "@/components/ui/button";
 import { UserProfileModal } from "@/components/UserProfileModal";
 import { useAuth } from "@/hooks/useAuth";
-import { useWallet } from "@/hooks/useWallet";
+import { useWallet } from "@/hooks/useWalletMock";
 
 const NavBar = () => {
   const [profileModalOpen, setProfileModalOpen] = useState(false);
