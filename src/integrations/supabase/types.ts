@@ -14,7 +14,84 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      Askcoin_balance: {
+        Row: {
+          balance: number | null
+          id: string
+          updated_at: string | null
+          user_id: string
+          wallet_address: string | null
+        }
+        Insert: {
+          balance?: number | null
+          id?: string
+          updated_at?: string | null
+          user_id?: string
+          wallet_address?: string | null
+        }
+        Update: {
+          balance?: number | null
+          id?: string
+          updated_at?: string | null
+          user_id?: string
+          wallet_address?: string | null
+        }
+        Relationships: []
+      }
+      Askcoin_transaction: {
+        Row: {
+          change: number | null
+          created_at: string | null
+          id: string
+          reason: string | null
+          receiver_id: string | null
+          sender_id: string | null
+          user_id: string
+          wallet_address: string | null
+        }
+        Insert: {
+          change?: number | null
+          created_at?: string | null
+          id?: string
+          reason?: string | null
+          receiver_id?: string | null
+          sender_id?: string | null
+          user_id?: string
+          wallet_address?: string | null
+        }
+        Update: {
+          change?: number | null
+          created_at?: string | null
+          id?: string
+          reason?: string | null
+          receiver_id?: string | null
+          sender_id?: string | null
+          user_id?: string
+          wallet_address?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          user_id: string
+          username: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          user_id?: string
+          username?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          user_id?: string
+          username?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
