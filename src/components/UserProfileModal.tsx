@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/hooks/useAuth';
-import { useWallet } from '@/hooks/useWalletMock';
+import { useWallet } from '@/hooks/useWallet';
 import { Wallet, Mail, User, Lock } from 'lucide-react';
 
 interface UserProfileModalProps {
@@ -242,10 +242,9 @@ export const UserProfileModal = ({ open, onOpenChange }: UserProfileModalProps) 
             onClick={handleWalletConnect} 
             variant="outline" 
             className="w-full"
-            disabled={true}
           >
             <Wallet className="mr-2 h-4 w-4" />
-            Aptos Wallet (Coming Soon)
+            Connect Aptos Wallet
           </Button>
         </div>
         
