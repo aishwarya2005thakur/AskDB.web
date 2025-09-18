@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/hooks/useAuth';
-import { useWallet } from '@/hooks/useWallet';
+import { useWallet } from '@/hooks/useWalletMock';
 import { Wallet, Mail, User, Lock } from 'lucide-react';
 
 interface UserProfileModalProps {

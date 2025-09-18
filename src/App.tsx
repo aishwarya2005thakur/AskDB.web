@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import { WalletProvider as AptosWalletProvider } from "@/components/providers/WalletProvider";
-import { WalletProvider } from "@/hooks/useWallet";
+import { WalletProvider } from "@/hooks/useWalletMock";
 import Index from "./pages/Index";
 import WriteQueries from "./pages/WriteQueries";
 import PracticeSQL from "./pages/PracticeSQL";
