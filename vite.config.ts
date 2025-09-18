@@ -21,7 +21,7 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     rollupOptions: {
-      external: ['aptos'],
+      external: ['aptos', '@telegram-apps/bridge'],
     },
   },
   optimizeDeps: {
